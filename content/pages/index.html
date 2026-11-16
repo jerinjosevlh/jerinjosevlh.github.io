@@ -1,0 +1,90 @@
+    {{NAV}}
+
+    <!-- About Section -->
+    <section class="about" id="about">
+        <div class="container">
+            <h2 class="section-title">About Me</h2>
+            <div class="about-content">
+                <div class="about-text">
+                    {{SITE_ABOUT_BODY}}
+                </div>
+                <div class="about-carousel">
+                    <div class="carousel-container">
+                        <div class="carousel-track" id="aboutCarouselTrack">
+                            <!-- Carousel cards are dynamically generated from data/about-carousel.json -->
+                        </div>
+                    </div>
+
+                    <!-- Carousel Indicators -->
+                    <div class="carousel-indicators">
+                        <!-- Indicators are dynamically generated from data/about-carousel.json -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Projects Section -->
+    <section class="projects" id="projects">
+        <div class="container">
+            <h2 class="section-title">Selected Work</h2>
+            <div class="projects-grid">
+                <!-- Project cards are dynamically generated from PROJECTS configuration in main.js -->
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section class="contact" id="contact">
+        <div class="container">
+            <h2 class="section-title">Let's Connect</h2>
+            <p class="section-subtitle">Whether you have a project in mind, want to collaborate, or simply chat about design... I'd love to connect.</p>
+            <div class="contact-buttons">
+                <a href="https://github.com/jerinjosevlh" class="button btn-secondary" target="_blank" rel="noopener noreferrer">GitHub</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Bottom Spacing -->
+    <div class="bottom-spacing"></div>
+
+    <!-- Back to Top Button -->
+    <button class="btn-arrow btn-arrow-md btn-arrow-filled back-to-top" onclick="scrollToTop()">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M12 18L12 6M8 10L12 6L16 10" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+    </button>
+
+    <!-- Modular JavaScript Architecture -->
+    <!-- Core systems -->
+    <script src="/assets/js/core/config.js"></script>
+    <script src="/assets/js/core/data-loader.js"></script>
+    <script src="/assets/js/core/theme-system.js"></script>
+
+    <!-- Utilities -->
+    <script src="/assets/js/utils/helpers.js"></script>
+    <script src="/assets/js/utils/animations.js"></script>
+    <script src="/assets/js/utils/image-preloader.js"></script>
+
+    <!-- Base components -->
+    <script src="/assets/js/components/navigation.js"></script>
+    <script src="/assets/js/components/mobile-menu.js"></script>
+    <script src="/assets/js/components/logo-animation.js"></script>
+    <script src="/assets/js/components/carousel-base.js"></script>
+
+    <!-- Carousel implementations -->
+    <script src="/assets/js/components/carousel-about.js"></script>
+    <script src="/assets/js/components/carousel-project.js"></script>
+    <script src="/assets/js/components/carousel-featured.js"></script>
+
+    <!-- Content renderers -->
+    <script src="/assets/js/content/project-renderer.js"></script>
+    <script src="/assets/js/content/carousel-renderer.js"></script>
+    <script src="/assets/js/content/brand-renderer.js"></script>
+    <script src="/assets/js/content/resume-renderer.js"></script>
+    <script src="/assets/js/content/case-study-renderer.js"></script>
+
+    <!-- Particle system (vendor) -->
+
+    <!-- Main initialization -->
+    <script src="/assets/js/main.js"></script>

@@ -1,0 +1,25 @@
+{
+  "title": "At the Speed of Thought: A UX Story - Jerimy Brown",
+  "tags": {
+    "description": "I have been dictating to my AI tools for a while now, because it just felt faster and more natural.",
+    "author": "Jerimy Brown",
+    "og:type": "article",
+    "og:url": "/blog/the-speed-of-thought/",
+    "og:title": "At the Speed of Thought: A UX Story - Jerimy Brown",
+    "og:description": "I have been dictating to my AI tools for a while now, because it just felt faster and more natural.",
+    "og:image": "/assets/content/blog/the-speed-of-thought/cover.webp",
+    "twitter:card": "summary_large_image",
+    "twitter:url": "/blog/the-speed-of-thought/",
+    "twitter:title": "At the Speed of Thought: A UX Story - Jerimy Brown",
+    "twitter:description": "I have been dictating to my AI tools for a while now, because it just felt faster and more natural.",
+    "twitter:image": "/assets/content/blog/the-speed-of-thought/cover.webp"
+  },
+  "jsonLd": [
+    "{\n  \"@context\": \"https://schema.org\",\n  \"@type\": \"BlogPosting\",\n  \"headline\": \"At the Speed of Thought: A UX Story\",\n  \"description\": \"I have been dictating to my AI tools for a while now, because it just felt faster and more natural.\",\n  \"image\": \"/assets/content/blog/the-speed-of-thought/cover.webp\",\n  \"url\": \"/blog/the-speed-of-thought/\",\n  \"datePublished\": \"2026-04-08\",\n  \"author\": {\n    \"@type\": \"Person\",\n    \"name\": \"Jerimy Brown\"\n  },\n  \"publisher\": {\n    \"@type\": \"Organization\",\n    \"name\": \"Jerimy Brown\",\n    \"url\": \"/\",\n    \"logo\": {\n      \"@type\": \"ImageObject\",\n      \"url\": \"/assets/images/preview/home-preview.png\"\n    }\n  }\n}"
+  ],
+  "canonical": "/blog/the-speed-of-thought/",
+  "nav": {
+    "home": false,
+    "active": "Blog"
+  }
+}

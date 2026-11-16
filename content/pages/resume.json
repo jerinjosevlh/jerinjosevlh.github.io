@@ -1,0 +1,22 @@
+{
+  "title": "Resume - Jerimy Brown",
+  "tags": {
+    "description": "Resume of Jerimy Brown — UX designer and design engineer with expertise in design systems, product strategy, and AI-driven experiences.",
+    "og:type": "website",
+    "og:url": "/resume/",
+    "og:title": "Resume - Jerimy Brown",
+    "og:description": "Full-stack UX leader combining director-level strategy with hands-on design and development expertise. Over 25 years architecting user experiences.",
+    "og:image": "/assets/images/preview/resume-preview.png",
+    "twitter:card": "summary_large_image",
+    "twitter:url": "/resume/",
+    "twitter:title": "Resume - Jerimy Brown",
+    "twitter:description": "Full-stack UX leader combining director-level strategy with hands-on design and development expertise. Over 25 years architecting user experiences.",
+    "twitter:image": "/assets/images/preview/resume-preview.png"
+  },
+  "jsonLd": [],
+  "canonical": "/resume/",
+  "nav": {
+    "home": false,
+    "active": "Resume"
+  }
+}

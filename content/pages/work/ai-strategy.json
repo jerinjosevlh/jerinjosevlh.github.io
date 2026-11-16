@@ -1,0 +1,24 @@
+{
+  "title": "Building a AI Design Strategy - Jerimy Brown",
+  "tags": {
+    "description": "AI strategy case study — designing AI-first product experiences and machine learning integration patterns by Jerimy Brown.",
+    "og:type": "website",
+    "og:url": "/work/ai-strategy/",
+    "og:title": "Building a AI Design Strategy - Jerimy Brown",
+    "og:description": "Designing intelligent experiences that build trust progressively through phased AI integration—from writing assistance to automation.",
+    "og:image": "/assets/images/preview/home-preview.png",
+    "twitter:card": "summary_large_image",
+    "twitter:url": "/work/ai-strategy/",
+    "twitter:title": "Building a AI Design Strategy - Jerimy Brown",
+    "twitter:description": "Designing intelligent experiences that build trust progressively through phased AI integration—from writing assistance to automation.",
+    "twitter:image": "/assets/images/preview/home-preview.png"
+  },
+  "jsonLd": [
+    "{\n        \"@context\": \"https://schema.org\",\n        \"@type\": \"CreativeWork\",\n        \"name\": \"AI Product Design Strategy\",\n        \"description\": \"Designing intelligent experiences that build trust progressively through phased AI integration—from writing assistance to automation. Achieved 78% increase in AI feature adoption with 92% user trust score.\",\n        \"author\": {\n            \"@type\": \"Person\",\n            \"name\": \"Jerimy Brown\",\n            \"url\": \"/\"\n        },\n        \"datePublished\": \"2024\",\n        \"keywords\": [\"AI design\", \"machine learning\", \"AI strategy\", \"trust building\", \"AI transparency\", \"product design\", \"progressive disclosure\"],\n        \"about\": {\n            \"@type\": \"Thing\",\n            \"name\": \"AI-First Product Design\"\n        },\n        \"url\": \"/work/ai-strategy/\",\n        \"inLanguage\": \"en-US\"\n    }"
+  ],
+  "canonical": "/work/ai-strategy/",
+  "nav": {
+    "home": false,
+    "active": null
+  }
+}

@@ -1,0 +1,105 @@
+<style>
+        /* Critical inline styles to prevent navigation flash */
+        .nav {
+            background: rgba(250, 250, 250, 0.1) !important;
+        }
+    </style>
+{{NAV}}
+
+    <!-- Blog Post Content -->
+    <main class="blog-detail">
+        <article class="blog-article" data-post-slug="why-ai-got-a-ui">
+            <div class="container">
+                <!-- Back link -->
+                <a href="/blog/" class="blog-back-link">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none">
+                        <path d="M19 12H5M5 12L12 19M5 12L12 5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                    Back to Blog
+                </a>
+
+                <!-- Article Header -->
+                <header class="blog-article__header" id="blog-header">
+                    <!-- Title, category, date rendered by JavaScript -->
+                </header>
+
+                <!-- Two-column layout: content left, carousel right -->
+                <div class="blog-article__layout">
+                    <div class="blog-article__content-column">
+                        <!-- Article Body (inlined at build time) -->
+                        <div class="blog-article__body">
+                            <p>There is a lot of noise right now about how artificial intelligence is going to fundamentally change the way we design software. Some of that noise is warranted. AI is absolutely changing what we design, how users interact with systems, and what we expect from our products. But there is a version of this conversation that goes too far, suggesting that design itself is becoming less relevant, that UI is on its way out, and that the future is just a blank text box. I do not buy that, and I think the evidence is already pushing back against it.</p>
+<p>If you have not spent time on <a href="https://www.shapeof.ai/" target="_blank">The Shape of AI</a>, it is worth bookmarking. The site catalogs emerging UX patterns specifically for AI-powered products, organized into categories like Wayfinders, Prompt Actions, Tuners, Governors, Trust Builders, and Identifiers. It is a thoughtful and growing library, and it makes one thing immediately clear: designing for AI is not simpler than designing for traditional software. It is more complex.</p>
+<h2>A lot of these patterns are built around text, and that tells you something</h2>
+<p>Scroll through the pattern library and you notice how many of them exist to solve the same core problem: people do not know how to talk to AI. Patterns like Suggestions, Templates, Nudges, and the Example Gallery all exist because the blank prompt box is intimidating. The open-ended input that feels like freedom to a power user feels like a wall to everyone else. So designers have had to build scaffolding around it, guardrails, examples, structured starting points, and guided flows to help people get traction.</p>
+<p>That is not a coincidence. That is the UX challenge that comes with natural language as a primary interface. Text is flexible, but flexibility without structure creates friction. We already solved this problem once. It was called the graphical user interface.</p>
+<h2>The pendulum is already swinging back toward UI</h2>
+<p>Here is what I find interesting when I watch the AI product space right now. The tools that launched as pure chat interfaces are quietly adding buttons, sidebars, structured panels, and purpose-built workflows. They are not doing this because chat failed. They are doing this because they are trying to reach a broader audience, and that audience needs more than a cursor blinking in an empty box.</p>
+<p>ChatGPT now has memory controls, model selectors, image tools, and project-based organization. Claude has an interface layer with artifacts, canvas views, and tool integrations. Midjourney moved from Discord commands to a full web UI. The pattern is consistent: start with text, then build the UI around it once you understand what people actually need.</p>
+<p>This should not surprise anyone who has been doing this work for a while. We went through the same evolution with voice interfaces. Early Alexa and Google Home were text-free, command-driven, and praised as the future of how we would interact with everything. Then people realized they still wanted to see a screen when they were shopping, or checking the weather, or managing a smart home. The Echo Show exists for a reason.</p>
+<p>UI has always been more efficient for many tasks. Clicking a button to navigate somewhere is faster than typing a URL. Selecting from a dropdown is faster than describing your options in prose. Dragging a slider to adjust a value is more intuitive than specifying a number in a prompt. These are not failures of imagination. They are features. We designed them deliberately because they reduce cognitive load and eliminate ambiguity.</p>
+<h2>UX is bigger than UI, but UI is not going anywhere</h2>
+<p>I want to be careful here, because user experience is not just about interfaces. UX encompasses research, strategy, information architecture, content design, accessibility, and the overall quality of a person's interaction with a product. A beautifully designed screen with confusing logic is still bad UX. A text-based AI that genuinely understands context and responds helpfully can be excellent UX.</p>
+<p>But UI is a critical component of that larger picture, and pretending otherwise is a mistake. The way information is presented, the affordances we give users, the feedback loops we create, the trust signals we embed, all of that is interface design. And if anything, AI makes that work harder, not easier. Now we have to design for uncertainty, for outputs that are non-deterministic, for users who are not sure what they asked for or whether the result is right.</p>
+<p>Look at the Governors category on The Shape of AI. Patterns like Action Plans, Verification, Stream of Thought, and Citations exist entirely to solve a design problem: users do not trust what AI gives them. Building that trust is a design challenge. So is helping someone understand what a model is doing, how to correct it, when to override it, and how to maintain a sense of control. None of that solves itself.</p>
+<h2>The new patterns require the same old skills</h2>
+<p>What I take from all of this is that AI is not replacing UX expertise. It is expanding the surface area of problems we need to solve. The fundamentals still apply. Understand your users. Reduce friction. Create clarity. Build trust. Establish feedback loops. Those have always been the job, and they remain the job now, just applied to a new and a genuinely more complex set of challenges.</p>
+<p>The tools are changing. The patterns are evolving. But the reason good design matters has not changed at all.</p>
+                        </div>
+
+                        <!-- Interactive CTA (rendered by build if interactiveUrl exists) -->
+                        
+
+                        <!-- Related Item (populated by JavaScript if relatedItem exists) -->
+                        <div class="blog-article__related" id="blog-related"></div>
+                    </div>
+
+                    <!-- Carousel column (hidden if no images, shown by JS) -->
+                    <div class="blog-article__images">
+                        <div id="blog-carousel">
+                            <!-- Carousel rendered by JavaScript if images exist -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </article>
+    </main>
+
+    <!-- Back to Blog Button -->
+    <a href="/blog/" class="btn-arrow btn-arrow-md back-to-projects">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M18 12L6 12M10 8L6 12L10 16" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+    </a>
+    <!-- Back to Top Button -->
+    <button class="btn-arrow btn-arrow-md btn-arrow-filled back-to-top" onclick="scrollToTop()">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M12 18L12 6M8 10L12 6L16 10" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+    </button>
+
+    <!-- Scripts -->
+    <script src="/assets/js/core/config.js"></script>
+    <script src="/assets/js/core/data-loader.js"></script>
+    <script src="/assets/js/core/theme-system.js"></script>
+    <script src="/assets/js/utils/helpers.js"></script>
+    <script src="/assets/js/utils/animations.js"></script>
+    <script src="/assets/js/components/navigation.js"></script>
+    <script src="/assets/js/components/mobile-menu.js"></script>
+    <script src="/assets/js/components/logo-animation.js"></script>
+
+    <!-- Blog Detail Module -->
+    <script type="module" src="/assets/js/blog/blog-detail.js"></script>
+
+
+    <!-- Page initialization (blog-specific, no content renderers needed) -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            if (typeof initTheme === 'function') initTheme();
+            if (typeof initLogoLetterAnimation === 'function') initLogoLetterAnimation();
+            if (typeof initBackToTop === 'function') initBackToTop();
+            if (typeof initPageTransitions === 'function') initPageTransitions();
+            if (typeof initNavigationActiveState === 'function') initNavigationActiveState();
+            if (typeof initMobileMenuClose === 'function') initMobileMenuClose();
+        });
+    </script>

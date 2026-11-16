@@ -1,0 +1,15 @@
+{
+  "name": "Jerin Jose",
+  "jobTitle": "Backend Engineer",
+  "description": "Backend engineer building simple, reliable systems that make life a little easier.",
+  "website": "https://jerinjosevlh.github.io",
+  "image": "/assets/images/about-me-1.jpg",
+  "socialLinks": {
+    "github": "https://github.com/jerinjosevlh"
+  },
+  "skills": [
+    "Backend Engineering",
+    "Distributed Systems",
+    "Go"
+  ]
+}

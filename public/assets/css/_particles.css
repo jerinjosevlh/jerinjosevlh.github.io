@@ -1,0 +1,356 @@
+/* ==========================================
+   Particle System
+   ========================================== */
+
+.particle-canvas {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 1;
+    pointer-events: none;
+}
+
+/* Slider, toggle and checkbox styles below were built for the old particle settings
+   panel (removed). The Lab page still uses them. */
+.particle-control-group {
+    margin-bottom: 12px;
+}
+
+.particle-control-group:last-of-type {
+    margin-bottom: 12px;
+}
+
+/* Row layout for side-by-side controls */
+.particle-control-group-row {
+    display: flex;
+    gap: 12px;
+    margin-bottom: 12px;
+}
+
+.particle-control-group-row .particle-control-group {
+    margin-bottom: 0;
+}
+
+.particle-control-color {
+    flex: 1;
+    min-width: 0;
+}
+
+.particle-control-strength {
+    flex: 2;
+    min-width: 0;
+}
+
+/* Connections and Speed row - 2/3 and 1/3 split */
+.particle-control-connections {
+    flex: 2;
+    min-width: 0;
+}
+
+.particle-control-speed {
+    flex: 1;
+    min-width: 0;
+}
+
+/* Settings row - checkbox and reset button side by side */
+.particle-settings-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+}
+
+.particle-settings-row .remember-me-label {
+    margin-bottom: 0;
+}
+
+/* Animated black hole strength control */
+.particle-control-group.animated-control {
+    max-height: 0;
+    opacity: 0;
+    overflow: hidden;
+    margin-bottom: 0;
+    transition: max-height 0.4s cubic-bezier(0.4, 0, 0.2, 1),
+                opacity 0.3s ease,
+                margin-bottom 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.particle-control-group.animated-control.visible {
+    max-height: 100px;
+    opacity: 1;
+    margin-bottom: 12px;
+}
+
+/* Disable transitions for initial page load */
+.particle-control-group.no-transition,
+.slider-toggle-pill.no-transition {
+    transition: none !important;
+}
+
+.particle-control-label {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 8px;
+    font-size: 12px;
+    font-weight: 500;
+    margin-bottom: 6px;
+    color: #525252;
+}
+
+.particle-control-value {
+    font-size: 11px;
+    font-weight: 600;
+    color: var(--color-accent-cool);
+}
+
+.particle-slider {
+    width: 100%;
+    height: 4px;
+    border-radius: 2px;
+    background: rgba(212, 212, 212, 0.5);
+    outline: none;
+    -webkit-appearance: none;
+    appearance: none;
+}
+
+.particle-slider::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 14px;
+    height: 14px;
+    border-radius: 50%;
+    background: var(--color-accent-cool);
+    cursor: pointer;
+    border: none;
+    box-shadow: 0 2px 6px color-mix(in srgb, var(--color-accent-cool) 30%, transparent);
+    transition: all 0.2s ease;
+}
+
+.particle-slider::-webkit-slider-thumb:hover {
+    transform: scale(1.1);
+    box-shadow: 0 3px 12px color-mix(in srgb, var(--color-accent-cool) 50%, transparent);
+}
+
+.particle-slider::-moz-range-thumb {
+    width: 14px;
+    height: 14px;
+    border-radius: 50%;
+    background: var(--color-accent-cool);
+    cursor: pointer;
+    border: none;
+    box-shadow: 0 2px 6px color-mix(in srgb, var(--color-accent-cool) 30%, transparent);
+    transition: all 0.2s ease;
+}
+
+.particle-slider::-moz-range-thumb:hover {
+    transform: scale(1.1);
+    box-shadow: 0 3px 12px color-mix(in srgb, var(--color-accent-cool) 50%, transparent);
+}
+
+.remember-me-label {
+    cursor: pointer;
+}
+
+.remember-me-checkbox {
+    width: 18px;
+    height: 18px;
+    cursor: pointer;
+    -webkit-appearance: none;
+    appearance: none;
+    border: 2px solid rgba(212, 212, 212, 0.5);
+    border-radius: 4px;
+    background: transparent;
+    position: relative;
+    transition: all 0.2s ease;
+}
+
+.remember-me-checkbox:hover {
+    border-color: var(--color-accent-cool);
+}
+
+.remember-me-checkbox:checked {
+    background: var(--color-accent-cool);
+    border-color: var(--color-accent-cool);
+}
+
+.remember-me-checkbox:checked::after {
+    content: '';
+    position: absolute;
+    left: 5px;
+    top: 2px;
+    width: 4px;
+    height: 8px;
+    border: solid white;
+    border-width: 0 2px 2px 0;
+    transform: rotate(45deg);
+}
+
+.particle-color-chips {
+    display: flex;
+    gap: 12px;
+    align-items: center;
+    margin-top: 12px;
+}
+
+.particle-color-chip {
+    cursor: pointer;
+}
+
+.particle-color-chip input[type="radio"] {
+    display: none;
+}
+
+.particle-color-chip .chip {
+    display: block;
+    width: 18px;
+    height: 18px;
+    border-radius: 50%;
+    border: 2px solid transparent;
+    transition: all 0.2s ease;
+    position: relative;
+}
+
+.particle-color-chip .chip::after {
+    content: '';
+    position: absolute;
+    inset: -3px;
+    border-radius: 50%;
+    border: 2px solid transparent;
+    transition: all 0.2s ease;
+}
+
+.particle-color-chip input[type="radio"]:checked + .chip::after {
+    border-color: #0f0f0f;
+}
+
+.chip-grey {
+    background: #d4d4d4;
+    color: #d4d4d4;
+}
+
+.chip-accent {
+    background: var(--color-accent-cool);
+    color: var(--color-accent-cool);
+}
+
+.particle-color-chip:hover .chip {
+    transform: scale(1.1);
+}
+
+.particle-slider-toggle {
+    position: relative;
+    display: flex;
+    background: rgba(212, 212, 212, 0.2);
+    border-radius: 20px;
+    padding: 2px;
+    gap: 2px;
+}
+
+.slider-toggle-pill {
+    position: absolute;
+    top: 2px;
+    left: 2px;
+    height: calc(100% - 4px);
+    width: calc(33.333% - 3px);
+    background: transparent;
+    border: 2px solid var(--color-accent-cool);
+    border-radius: 18px;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    pointer-events: none;
+    z-index: 0;
+}
+
+/* Mode toggle specific (2 options) */
+.particle-mode-toggle .slider-toggle-pill {
+    width: calc(50% - 3px);
+}
+
+.slider-toggle-option {
+    flex: 1;
+    position: relative;
+    z-index: 1;
+    cursor: pointer;
+}
+
+.slider-toggle-option input[type="radio"] {
+    display: none;
+}
+
+.slider-toggle-option span {
+    display: block;
+    padding: 4px 8px;
+    text-align: center;
+    font-size: 11px;
+    font-weight: 500;
+    color: #1a1a1a;
+    transition: color 0.3s ease;
+}
+
+.slider-toggle-option input[type="radio"]:checked + span {
+    color: #1a1a1a;
+}
+
+.slider-toggle-option:hover span {
+    opacity: 0.7;
+}
+
+.particle-radio-group {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+}
+
+.particle-radio-label {
+    flex: 1;
+    min-width: 60px;
+}
+
+.particle-radio-label input[type="radio"] {
+    display: none;
+}
+
+.particle-radio-label span {
+    display: block;
+    padding: 4px 8px;
+    border-radius: 6px;
+    background: rgba(212, 212, 212, 0.3);
+    border: 1px solid transparent;
+    text-align: center;
+    font-size: 11px;
+    font-weight: 500;
+    color: #525252;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.particle-radio-label input[type="radio"]:checked + span {
+    background: color-mix(in srgb, var(--color-accent-cool) 15%, transparent);
+    border-color: var(--color-accent-cool);
+    color: var(--color-accent-cool);
+}
+
+.particle-radio-label:hover span {
+    background: rgba(212, 212, 212, 0.4);
+}
+
+.particle-radio-label input[type="radio"]:checked + span:hover {
+    background: color-mix(in srgb, var(--color-accent-cool) 20%, transparent);
+}
+
+/* Small button variant for reset */
+.btn-sm {
+    padding: 0 12px;
+    font-size: 11px;
+    width: auto;
+}
+
+/* Phones: show the hero's phone-only line breaks */
+@media (max-width: 768px) {
+    .hero-title .mobile-break,
+    .hero-subtitle .mobile-break {
+        display: inline;
+    }
+}

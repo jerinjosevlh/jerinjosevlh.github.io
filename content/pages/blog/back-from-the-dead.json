@@ -1,0 +1,25 @@
+{
+  "title": "Back From the Dead: A UX Story - Jerimy Brown",
+  "tags": {
+    "description": "The death toll in our industry is unlike anything I have seen before. Figma is dead. Design is dead. UX is dead. At this point I am surprised anyone showed up to work this morning.",
+    "author": "Jerimy Brown",
+    "og:type": "article",
+    "og:url": "/blog/back-from-the-dead/",
+    "og:title": "Back From the Dead: A UX Story - Jerimy Brown",
+    "og:description": "The death toll in our industry is unlike anything I have seen before. Figma is dead. Design is dead. UX is dead. At this point I am surprised anyone showed up to work this morning.",
+    "og:image": "/assets/content/blog/back-from-the-dead/cover.webp",
+    "twitter:card": "summary_large_image",
+    "twitter:url": "/blog/back-from-the-dead/",
+    "twitter:title": "Back From the Dead: A UX Story - Jerimy Brown",
+    "twitter:description": "The death toll in our industry is unlike anything I have seen before. Figma is dead. Design is dead. UX is dead. At this point I am surprised anyone showed up to work this morning.",
+    "twitter:image": "/assets/content/blog/back-from-the-dead/cover.webp"
+  },
+  "jsonLd": [
+    "{\n  \"@context\": \"https://schema.org\",\n  \"@type\": \"BlogPosting\",\n  \"headline\": \"Back From the Dead: A UX Story\",\n  \"description\": \"The death toll in our industry is unlike anything I have seen before. Figma is dead. Design is dead. UX is dead. At this point I am surprised anyone showed up to work this morning.\",\n  \"image\": \"/assets/content/blog/back-from-the-dead/cover.webp\",\n  \"url\": \"/blog/back-from-the-dead/\",\n  \"datePublished\": \"2026-03-27\",\n  \"author\": {\n    \"@type\": \"Person\",\n    \"name\": \"Jerimy Brown\"\n  },\n  \"publisher\": {\n    \"@type\": \"Organization\",\n    \"name\": \"Jerimy Brown\",\n    \"url\": \"/\",\n    \"logo\": {\n      \"@type\": \"ImageObject\",\n      \"url\": \"/assets/images/preview/home-preview.png\"\n    }\n  }\n}"
+  ],
+  "canonical": "/blog/back-from-the-dead/",
+  "nav": {
+    "home": false,
+    "active": "Blog"
+  }
+}

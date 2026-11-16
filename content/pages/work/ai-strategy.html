@@ -1,0 +1,163 @@
+    {{NAV}}
+
+    <!-- Project Hero Section -->
+    <section class="project-hero">
+        <div class="container">
+            <div class="project-breadcrumb">
+                <a href="/#projects">← Back</a>
+            </div>
+            <div class="project-header">
+                <h1 class="project-title"><!-- Dynamic content from PROJECTS config --></h1>
+                <p class="project-subtitle"><!-- Dynamic content from PROJECTS config --></p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Project Featured Image with Metadata -->
+    <section class="project-featured-image">
+        <div class="container">
+            <div class="featured-image-container">
+                <div class="featured-image-carousel-container" id="featuredCarouselContainer">
+                    <div class="featured-image-carousel-track" id="featuredCarouselTrack" data-position="0">
+                        <div class="featured-image-slide">
+                            <img src="/assets/images/work/ai-1-light.png" alt="AI-first product design interface" class="theme-responsive-image">
+                        </div>
+                        <div class="featured-image-slide">
+                            <img src="/assets/images/work/ai-2-light.png" alt="AI interaction patterns and flows" class="theme-responsive-image">
+                        </div>
+                        <div class="featured-image-slide">
+                            <img src="/assets/images/work/ai-3-light.png" alt="Machine learning integration design" class="theme-responsive-image">
+                        </div>
+                    </div>
+                </div>
+                <div class="project-meta-overlay">
+                    <div class="featured-carousel-indicators">
+                        <button class="indicator active" data-slide="0" onclick="goToFeaturedSlide(0)"></button>
+                        <button class="indicator" data-slide="1" onclick="goToFeaturedSlide(1)"></button>
+                        <button class="indicator" data-slide="2" onclick="goToFeaturedSlide(2)"></button>
+                    </div>
+                    <div class="project-meta">
+                        <div class="meta-item">
+                            <span class="meta-label">Role</span>
+                            <span class="meta-value">Director of UX / Designer</span>
+                        </div>
+                        <div class="meta-item">
+                            <span class="meta-label">Timeline</span>
+                            <span class="meta-value">9 months</span>
+                        </div>
+                        <div class="meta-item">
+                            <span class="meta-label">Team</span>
+                            <span class="meta-value">2 designers, 4 developers, 1 ML engineer</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Project Content -->
+    <section class="project-content">
+        <div class="container">
+            <div class="content-grid">
+                <aside class="content-sidebar">
+                    <nav class="project-nav">
+                        <div class="project-nav-back">
+                            <a href="/#projects">← Back</a>
+                        </div>
+                        <h3>Contents</h3>
+                        <ul>
+                            <li><a href="#overview">Overview</a></li>
+                            <li><a href="#challenge">The Challenge</a></li>
+                            <li><a href="#solution">Solution</a></li>
+                            <li><a href="#process">Design Process</a></li>
+                            <li><a href="#results">Results</a></li>
+                        </ul>
+                    </nav>
+                </aside>
+
+                <main class="content-main">
+                    <section id="overview" class="content-section">
+                        <h2></h2>
+                        <div class="section-content"></div>
+                    </section>
+
+                    <section id="challenge" class="content-section">
+                        <h2></h2>
+                        <div class="section-content"></div>
+                    </section>
+
+                    <section id="solution" class="content-section">
+                        <h2></h2>
+                        <div class="section-content"></div>
+                    </section>
+
+                    <section id="process" class="content-section">
+                        <h2></h2>
+                        <div class="section-content"></div>
+                    </section>
+
+                    <section id="results" class="content-section">
+                        <h2></h2>
+                        <div class="section-content"></div>
+                    </section>
+                </main>
+            </div>
+        </div>
+    </section>
+
+    <!-- Project Navigation -->
+    <section class="project-navigation">
+        <div class="container">
+            <div class="projects-grid" data-project-navigation>
+                <!-- Prev/next links rendered by initProjectNavigation() from data/projects.json -->
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section class="contact" id="contact">
+        <div class="container">
+            <h2 class="section-title">Let's Work Together</h2>
+            <p>Have a project in mind? I'd love to hear about it and explore how we can bring your ideas to life.</p>
+            <div class="contact-buttons">
+                <a href="https://github.com/jerinjosevlh" class="button btn-secondary" target="_blank" rel="noopener noreferrer">GitHub</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Bottom Spacing -->
+    <div class="bottom-spacing"></div>
+
+    <!-- Back to Projects Button -->
+    <a href="/#projects" class="btn-arrow btn-arrow-md back-to-projects">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M18 12L6 12M10 8L6 12L10 16" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+    </a>
+    <!-- Back to Top Button -->
+    <button class="btn-arrow btn-arrow-md btn-arrow-filled back-to-top" onclick="scrollToTop()">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M12 18L12 6M8 10L12 6L16 10" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+    </button>
+    <!-- Modular JavaScript Architecture -->
+    <script src="/assets/js/core/config.js"></script>
+    <script src="/assets/js/core/data-loader.js"></script>
+    <script src="/assets/js/core/theme-system.js"></script>
+    <script src="/assets/js/utils/helpers.js"></script>
+    <script src="/assets/js/utils/animations.js"></script>
+    <script src="/assets/js/utils/image-preloader.js"></script>
+    <script src="/assets/js/components/navigation.js"></script>
+    <script src="/assets/js/components/mobile-menu.js"></script>
+    <script src="/assets/js/components/logo-animation.js"></script>
+    <script src="/assets/js/components/carousel-base.js"></script>
+    <script src="/assets/js/components/carousel-about.js"></script>
+    <script src="/assets/js/components/carousel-project.js"></script>
+    <script src="/assets/js/components/carousel-featured.js"></script>
+    <script src="/assets/js/content/project-renderer.js"></script>
+    <script src="/assets/js/content/carousel-renderer.js"></script>
+    <script src="/assets/js/content/brand-renderer.js"></script>
+    <script src="/assets/js/content/resume-renderer.js"></script>
+    <script src="/assets/js/content/case-study-renderer.js"></script>
+    <script src="/assets/js/marked.min.js"></script>
+    <script src="/assets/js/main.js"></script>

@@ -1,0 +1,73 @@
+    {{NAV}}
+
+    <!-- Main Content -->
+    <main class="blog-listing">
+        <div class="container">
+            <header class="header blog-listing__header">
+                <h1 class="title">Blog</h1>
+                <p class="subtitle">Thoughts on design and technology</p>
+            </header>
+        </div>
+
+        <!-- Filter Bar -->
+        <div class="blog-filter-bar" role="toolbar" aria-label="Blog filters">
+            <div class="blog-filter-controls">
+                <div class="blog-filter-group blog-filter-group--tags">
+                    <span class="blog-filter-label" id="tag-filter-label">Topics:</span>
+                    <div id="tag-filter" class="blog-filter-tags" role="group" aria-labelledby="tag-filter-label">
+                        <!-- Tag chips rendered by JavaScript, inserted before the clear button -->
+                        <button id="clear-filters" class="button btn-accent btn-sm">
+                            Clear Filters
+                        </button>
+                    </div>
+                </div>
+
+                <div class="blog-filter-group">
+                    <label for="sort-select">Sort:</label>
+                    <select id="sort-select" aria-label="Sort posts">
+                        <option value="newest">Newest First</option>
+                        <option value="oldest">Oldest First</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+
+        <!-- Blog Grid -->
+        <div class="container">
+            <div id="blog-grid" class="blog-grid" role="list" aria-label="Blog posts">
+                <!-- Blog cards rendered by JavaScript -->
+            </div>
+        </div>
+    </main>
+
+    <!-- Back to Top Button -->
+    <button class="btn-arrow btn-arrow-md btn-arrow-filled back-to-top" onclick="scrollToTop()">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M12 18L12 6M8 10L12 6L16 10" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+    </button>
+
+    <!-- Scripts -->
+    <script src="/assets/js/core/config.js"></script>
+    <script src="/assets/js/core/data-loader.js"></script>
+    <script src="/assets/js/core/theme-system.js"></script>
+    <script src="/assets/js/utils/helpers.js"></script>
+    <script src="/assets/js/utils/animations.js"></script>
+    <script src="/assets/js/components/navigation.js"></script>
+    <script src="/assets/js/components/mobile-menu.js"></script>
+    <script src="/assets/js/components/logo-animation.js"></script>
+
+    <!-- Blog Module -->
+    <script type="module" src="/assets/js/blog/blog-grid.js"></script>
+
+    <!-- Page initialization (blog-specific, no content renderers needed) -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            if (typeof initTheme === 'function') initTheme();
+            if (typeof initLogoLetterAnimation === 'function') initLogoLetterAnimation();
+            if (typeof initBackToTop === 'function') initBackToTop();
+            if (typeof initPageTransitions === 'function') initPageTransitions();
+            if (typeof initNavigationActiveState === 'function') initNavigationActiveState();
+            if (typeof initMobileMenuClose === 'function') initMobileMenuClose();
+        });
+    </script>

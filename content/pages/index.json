@@ -1,0 +1,24 @@
+{
+  "title": "Jerin Jose - Backend Engineer",
+  "tags": {
+    "description": "Jerin Jose — backend engineer building simple, reliable systems that make life a little easier.",
+    "og:type": "website",
+    "og:url": "/",
+    "og:title": "Jerin Jose - Backend Engineer",
+    "og:description": "Jerin Jose — backend engineer building simple, reliable systems that make life a little easier.",
+    "og:image": "/assets/images/preview/home-preview.png",
+    "twitter:card": "summary_large_image",
+    "twitter:url": "/",
+    "twitter:title": "Jerin Jose - Backend Engineer",
+    "twitter:description": "Jerin Jose — backend engineer building simple, reliable systems that make life a little easier.",
+    "twitter:image": "/assets/images/preview/home-preview.png"
+  },
+  "jsonLd": [
+    "{\n    \"@context\": \"https://schema.org\",\n    \"@type\": \"Person\",\n    \"name\": \"Jerin Jose\",\n    \"url\": \"/\",\n    \"jobTitle\": \"Backend Engineer\",\n    \"description\": \"Jerin Jose \\u2014 backend engineer building simple, reliable systems that make life a little easier.\"\n}"
+  ],
+  "canonical": "/",
+  "nav": {
+    "home": true,
+    "active": null
+  }
+}

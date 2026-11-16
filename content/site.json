@@ -1,0 +1,10 @@
+{
+  "hero": {
+    "heading": "Making life | a little",
+    "highlight": "easier",
+    "tagline": "Hi, I’m Jerin. | I write software for a living."
+  },
+  "about": {
+    "markdown": "I'm a backend engineer who likes building the parts of software you never see but always rely on: the services, data and systems that keep things working quietly in the background.\n\nThese days my interest is in distributed systems: how many machines work together as one, and how a system keeps going when some of them fail. Right now I'm building a distributed key-value store from scratch to learn exactly that, one piece at a time.\n\nI also love building complete software, from the first idea to something people can use, whenever the project lines up with what I care about."
+  }
+}

@@ -1,0 +1,25 @@
+{
+  "title": "How AI Helped Accessibility Escape the Backlog - Jerimy Brown",
+  "tags": {
+    "description": "Everyone is arguing about what AI is taking. Not enough people are talking about what it is giving back. For me it gave back time, and the first thing I did with it was accessibility work.",
+    "author": "Jerimy Brown",
+    "og:type": "article",
+    "og:url": "/blog/how-ai-helped-accessibility-escape-the-backlog/",
+    "og:title": "How AI Helped Accessibility Escape the Backlog - Jerimy Brown",
+    "og:description": "Everyone is arguing about what AI is taking. Not enough people are talking about what it is giving back. For me it gave back time, and the first thing I did with it was accessibility work.",
+    "og:image": "/assets/content/blog/how-ai-helped-accessibility-escape-the-backlog/cover.webp",
+    "twitter:card": "summary_large_image",
+    "twitter:url": "/blog/how-ai-helped-accessibility-escape-the-backlog/",
+    "twitter:title": "How AI Helped Accessibility Escape the Backlog - Jerimy Brown",
+    "twitter:description": "Everyone is arguing about what AI is taking. Not enough people are talking about what it is giving back. For me it gave back time, and the first thing I did with it was accessibility work.",
+    "twitter:image": "/assets/content/blog/how-ai-helped-accessibility-escape-the-backlog/cover.webp"
+  },
+  "jsonLd": [
+    "{\n  \"@context\": \"https://schema.org\",\n  \"@type\": \"BlogPosting\",\n  \"headline\": \"How AI Helped Accessibility Escape the Backlog\",\n  \"description\": \"Everyone is arguing about what AI is taking. Not enough people are talking about what it is giving back. For me it gave back time, and the first thing I did with it was accessibility work.\",\n  \"image\": \"/assets/content/blog/how-ai-helped-accessibility-escape-the-backlog/cover.webp\",\n  \"url\": \"/blog/how-ai-helped-accessibility-escape-the-backlog/\",\n  \"datePublished\": \"2026-10-02\",\n  \"author\": {\n    \"@type\": \"Person\",\n    \"name\": \"Jerimy Brown\"\n  },\n  \"publisher\": {\n    \"@type\": \"Organization\",\n    \"name\": \"Jerimy Brown\",\n    \"url\": \"/\",\n    \"logo\": {\n      \"@type\": \"ImageObject\",\n      \"url\": \"/assets/images/preview/home-preview.png\"\n    }\n  }\n}"
+  ],
+  "canonical": "/blog/how-ai-helped-accessibility-escape-the-backlog/",
+  "nav": {
+    "home": false,
+    "active": "Blog"
+  }
+}

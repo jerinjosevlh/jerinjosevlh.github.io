@@ -1,0 +1,1844 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Reorderable List UX Patterns - Jerimy Brown</title>
+  <link rel="icon" href="../../../../../favicon.ico" type="image/x-icon">
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../../../../../assets/css/main.css">
+  <script src="https://www.gstatic.com/firebasejs/11.7.3/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/11.7.3/firebase-firestore-compat.js"></script>
+  <script>
+    firebase.initializeApp({
+      apiKey: "AIzaSyB_BNSS9fpyRS2Z_lDaxkP9MXVIaClQaVg",
+      authDomain: "jerimybrown-15ddc.firebaseapp.com",
+      projectId: "jerimybrown-15ddc",
+      storageBucket: "jerimybrown-15ddc.firebasestorage.app",
+      messagingSenderId: "762120003281",
+      appId: "1:762120003281:web:1758c9fde46f6b2a2faff0",
+      measurementId: "G-SC2BTWTQY4"
+    });
+    window.db = firebase.firestore();
+  </script>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://unpkg.com/react@18/umd/react.development.js"></script>
+  <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
+  <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+  <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+  <style>
+    /* Critical inline styles to prevent navigation flash */
+    .nav {
+      background: rgba(250, 250, 250, 0.1) !important;
+    }
+    body[data-theme="dark"] .nav {
+      background: rgba(23, 23, 23, 0.1) !important;
+    }
+
+    /* Interactive demo specific styles */
+    .interactive-demo {
+      min-height: 100vh;
+      padding-top: 120px;
+    }
+
+    .interactive-demo .container {
+      max-width: var(--container-max-width);
+      margin: 0 auto;
+      padding: 0 var(--container-padding-desktop);
+    }
+
+    @media (max-width: 768px) {
+      .interactive-demo .container {
+        padding: 0 var(--container-padding-mobile);
+      }
+    }
+
+    * { box-sizing: border-box; }
+
+    ::selection {
+      background-color: color-mix(in srgb, var(--color-accent) 15%, transparent);
+      color: var(--text-primary);
+    }
+
+    .dragging-item {
+      position: fixed;
+      pointer-events: none;
+      z-index: 1000;
+      box-shadow: var(--shadow-lg);
+      background: var(--bg-primary);
+      border-radius: var(--radius-sm);
+      border: 2px solid var(--color-accent);
+    }
+
+    /* ==========================================
+       Two-Column Test Layout
+       ========================================== */
+    .test-layout {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: var(--space-8);
+      transition: grid-template-columns 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    .test-layout.results-mode {
+      grid-template-columns: 0fr 1fr;
+    }
+
+    .test-layout__list {
+      overflow: hidden;
+      transition: opacity 0.4s ease;
+      min-width: 0;
+    }
+
+    .test-layout.results-mode .test-layout__list {
+      opacity: 0;
+      pointer-events: none;
+    }
+
+    .test-layout__panel {
+      min-width: 0;
+    }
+
+    .mobile-only {
+      display: none;
+      text-align: center;
+      padding-top: var(--space-6);
+    }
+
+    .mobile-only-inline { display: none; }
+    .desktop-only-inline { display: inline; }
+
+    .mobile-results-inline {
+      padding-top: var(--space-12);
+    }
+
+    @media (max-width: 768px) {
+      .test-layout {
+        grid-template-columns: 1fr;
+      }
+      .test-layout__panel {
+        order: -1;
+      }
+      .test-layout.results-mode {
+        grid-template-columns: 1fr;
+      }
+      .test-layout.results-mode .test-layout__list {
+        display: none;
+      }
+      .mobile-only { display: block; }
+      .desktop-only { display: none; }
+      .mobile-only-inline { display: inline; }
+      .desktop-only-inline { display: none; }
+    }
+
+    /* ==========================================
+       Test Panel (Right Column)
+       ========================================== */
+    .test-panel {
+      padding: 0 0 var(--space-8) 0;
+    }
+
+    .test-panel__pattern-label {
+      font-size: var(--font-size-xs);
+      font-weight: var(--font-weight-semibold);
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--color-accent);
+      margin-bottom: var(--space-2);
+    }
+
+    .test-panel__title {
+      font-size: var(--typo-h3-size);
+      font-weight: var(--typo-h3-weight);
+      line-height: var(--typo-h3-line-height);
+      color: var(--text-primary);
+      margin: 0 0 var(--space-4) 0;
+    }
+
+    .test-panel__subtitle {
+      font-size: var(--font-size-sm);
+      font-weight: var(--font-weight-regular);
+      line-height: 1.6;
+      color: var(--text-secondary);
+      margin: 0 0 var(--space-6) 0;
+    }
+
+    /* Target order list in panel */
+    .target-order {
+      margin: 0 0 var(--space-6) 0;
+      padding: 0;
+      list-style: none;
+    }
+
+    .target-order li {
+      font-size: var(--font-size-sm);
+      color: var(--text-primary);
+      padding: 3px 0;
+      font-weight: var(--font-weight-medium);
+    }
+
+    .target-order-label {
+      font-size: var(--font-size-xs);
+      font-weight: var(--font-weight-semibold);
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+      color: var(--color-accent);
+      margin-bottom: var(--space-2);
+    }
+
+    .target-order-label svg {
+      transition: transform 0.3s ease;
+    }
+
+    @media (max-width: 768px) {
+      .target-order-label svg {
+        transform: rotate(-90deg);
+      }
+      .test-panel {
+        padding-bottom: var(--space-2);
+      }
+      .test-panel__subtitle {
+        margin-bottom: var(--space-3);
+      }
+      .target-order {
+        margin-bottom: var(--space-3);
+      }
+    }
+
+    /* Timer display */
+    .timer-display {
+      font-size: clamp(40px, 6vw, 56px);
+      font-weight: var(--font-weight-light);
+      letter-spacing: -0.02em;
+      color: var(--text-primary);
+      font-variant-numeric: tabular-nums;
+      margin: var(--space-6) 0;
+      font-family: var(--font-family-primary);
+    }
+
+    .timer-display.running {
+      color: var(--color-accent);
+    }
+
+    .timer-display.complete {
+      color: var(--color-accent);
+    }
+
+    /* Previous round reference */
+    .prev-round {
+      font-size: var(--font-size-sm);
+      color: var(--text-tertiary);
+      margin-bottom: var(--space-4);
+    }
+
+    .prev-round span {
+      font-weight: var(--font-weight-semibold);
+      color: var(--text-secondary);
+    }
+
+    /* ==========================================
+       Results Panel
+       ========================================== */
+    .results-content {
+      text-align: center;
+      padding: var(--space-8) 0;
+    }
+
+    .results-content__heading {
+      font-size: var(--typo-h2-size);
+      font-weight: var(--typo-h2-weight);
+      letter-spacing: var(--typo-h2-spacing);
+      line-height: var(--typo-h2-line-height);
+      color: var(--text-primary);
+      margin: 0 0 var(--space-8) 0;
+    }
+
+    .results-times {
+      display: flex;
+      justify-content: center;
+      gap: var(--space-12);
+      margin-bottom: var(--space-8);
+    }
+
+    @media (max-width: 480px) {
+      .results-times {
+        flex-direction: column;
+        align-items: center;
+        gap: var(--space-6);
+      }
+    }
+
+    .results-time-block {
+      text-align: center;
+    }
+
+    .results-time-block__label {
+      font-size: var(--font-size-xs);
+      font-weight: var(--font-weight-semibold);
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--text-tertiary);
+      margin-bottom: var(--space-2);
+    }
+
+    .results-time-block__value {
+      font-size: clamp(28px, 4vw, 36px);
+      font-weight: var(--font-weight-light);
+      color: var(--text-primary);
+      font-variant-numeric: tabular-nums;
+    }
+
+    .results-improvement {
+      margin-bottom: var(--space-8);
+    }
+
+    .results-improvement__value {
+      font-size: clamp(48px, 8vw, 72px);
+      font-weight: var(--font-weight-light);
+      letter-spacing: -0.03em;
+      color: var(--color-accent);
+      line-height: 1;
+      margin-bottom: var(--space-2);
+    }
+
+    .results-improvement__label {
+      font-size: var(--font-size-sm);
+      color: var(--text-secondary);
+    }
+
+    .results-ctas {
+      display: flex;
+      justify-content: center;
+      gap: var(--space-4);
+      flex-wrap: wrap;
+    }
+
+    /* ==========================================
+       Mobile reveal animation
+       ========================================== */
+    @media (max-width: 768px) {
+      .mobile-reveal {
+        max-height: 0;
+        overflow: hidden;
+        opacity: 0;
+        transition: max-height 0.4s ease, opacity 0.3s ease;
+      }
+      .mobile-reveal.visible {
+        max-height: 600px;
+        opacity: 1;
+      }
+    }
+
+    /* ==========================================
+       List Label (above pattern)
+       ========================================== */
+    .list-label {
+      font-size: clamp(28px, 4vw, 36px);
+      font-weight: var(--font-weight-light);
+      letter-spacing: -0.02em;
+      color: var(--text-primary);
+      margin-bottom: var(--space-4);
+    }
+
+    /* ==========================================
+       List Container & Items (preserved from previous)
+       ========================================== */
+    .list-container {
+      background: var(--color-neutral-100);
+      border-radius: var(--radius-md);
+      padding: var(--space-4);
+      border: 1px solid var(--color-neutral-200);
+    }
+    [data-theme="dark"] .list-container {
+      background: var(--color-neutral-800);
+      border-color: var(--color-neutral-700);
+    }
+
+    /* List items - Variant 0 (PrimeNG) */
+    .list-panel {
+      background: var(--bg-primary);
+      border-radius: var(--radius-sm);
+      border: 1px solid var(--color-neutral-200);
+      overflow: hidden;
+    }
+    [data-theme="dark"] .list-panel {
+      background: var(--color-neutral-900);
+      border-color: var(--color-neutral-700);
+    }
+
+    .list-item-v0 {
+      display: flex;
+      align-items: center;
+      gap: var(--space-3);
+      padding: var(--space-3) var(--space-4);
+      cursor: pointer;
+      transition: background var(--transition-fast);
+      user-select: none;
+      border-bottom: 1px solid var(--color-neutral-200);
+    }
+    [data-theme="dark"] .list-item-v0 {
+      border-bottom-color: var(--color-neutral-700);
+    }
+    .list-item-v0:last-child {
+      border-bottom: none;
+    }
+    .list-item-v0:hover {
+      background: var(--color-neutral-100);
+    }
+    [data-theme="dark"] .list-item-v0:hover {
+      background: var(--color-neutral-800);
+    }
+    .list-item-v0.selected {
+      background: color-mix(in srgb, var(--color-accent) 8%, transparent);
+    }
+    .list-item-v0.selected:hover {
+      background: color-mix(in srgb, var(--color-accent) 15%, transparent);
+    }
+
+    /* List items - Variant 1 (Drag & Drop) */
+    .list-item-v1 {
+      display: flex;
+      align-items: center;
+      gap: var(--space-3);
+      padding: var(--space-3);
+      background: var(--bg-primary);
+      border-radius: var(--radius-sm);
+      border: 2px solid var(--color-neutral-200);
+      transition: border-color var(--transition-fast);
+      cursor: grab;
+    }
+    .list-item-v1:active {
+      cursor: grabbing;
+    }
+    [data-theme="dark"] .list-item-v1 {
+      background: var(--color-neutral-900);
+      border-color: var(--color-neutral-700);
+    }
+    .list-item-v1:hover {
+      border-color: var(--color-neutral-300);
+    }
+    [data-theme="dark"] .list-item-v1:hover {
+      border-color: var(--color-neutral-600);
+    }
+
+    /* Control buttons */
+    .ctrl-btn {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 36px;
+      height: 36px;
+      border-radius: 6px;
+      background: var(--bg-primary);
+      border: 1px solid var(--color-neutral-200);
+      color: var(--text-secondary);
+      cursor: pointer;
+      transition: all var(--transition-fast);
+    }
+    [data-theme="dark"] .ctrl-btn {
+      background: var(--color-neutral-800);
+      border-color: var(--color-neutral-700);
+    }
+    .ctrl-btn:hover:not(:disabled) {
+      background: var(--color-neutral-100);
+      color: var(--text-primary);
+    }
+    [data-theme="dark"] .ctrl-btn:hover:not(:disabled) {
+      background: var(--color-neutral-700);
+    }
+    .ctrl-btn:disabled {
+      opacity: 0.3;
+      cursor: not-allowed;
+    }
+
+    /* Inline control buttons */
+    .ctrl-btn-inline {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 32px;
+      height: 32px;
+      border-radius: 6px;
+      border: none;
+      background: transparent;
+      color: var(--text-tertiary);
+      cursor: pointer;
+      transition: all var(--transition-fast);
+    }
+    .ctrl-btn-inline:hover:not(:disabled) {
+      background: var(--color-neutral-100);
+      color: var(--text-primary);
+    }
+    [data-theme="dark"] .ctrl-btn-inline:hover:not(:disabled) {
+      background: var(--color-neutral-700);
+    }
+    .ctrl-btn-inline:disabled {
+      opacity: 0.3;
+      cursor: not-allowed;
+    }
+
+    /* Drag handle */
+    .drag-handle {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: grab;
+      color: var(--text-tertiary);
+      transition: color var(--transition-fast);
+      touch-action: none;
+    }
+    .drag-handle:hover {
+      color: var(--text-secondary);
+    }
+    .drag-handle:active {
+      cursor: grabbing;
+    }
+
+    /* Item text */
+    .item-title {
+      font-weight: var(--font-weight-medium);
+      color: var(--text-primary);
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    .item-subtitle {
+      font-size: var(--font-size-sm);
+      color: var(--text-tertiary);
+    }
+    .selected .item-title {
+      color: var(--color-accent);
+    }
+    .selected .item-subtitle {
+      color: var(--color-accent);
+      opacity: 0.7;
+    }
+
+    /* ==========================================
+       Leaderboard
+       ========================================== */
+    .leaderboard {
+      margin-top: var(--space-12);
+      padding-bottom: var(--space-20);
+    }
+
+    .leaderboard__title {
+      font-size: var(--typo-h3-size);
+      font-weight: var(--typo-h3-weight);
+      line-height: var(--typo-h3-line-height);
+      color: var(--text-primary);
+      margin: 0 0 var(--space-6) 0;
+    }
+
+    .leaderboard__summary {
+      display: flex;
+      gap: var(--space-4);
+      margin-bottom: var(--space-6);
+      flex-wrap: wrap;
+    }
+
+    .leaderboard__stat {
+      flex: 1;
+      min-width: 120px;
+      background: var(--color-neutral-100);
+      border: 1px solid var(--color-neutral-200);
+      border-radius: var(--radius-sm);
+      padding: var(--space-4);
+      text-align: center;
+    }
+    [data-theme="dark"] .leaderboard__stat {
+      background: var(--color-neutral-800);
+      border-color: var(--color-neutral-700);
+    }
+
+    .leaderboard__stat-value {
+      font-size: var(--font-size-2xl);
+      font-weight: var(--font-weight-light);
+      color: var(--text-primary);
+      margin-bottom: var(--space-1);
+    }
+
+    .leaderboard__stat-value--accent {
+      color: var(--color-accent);
+    }
+
+    .leaderboard__stat-label {
+      font-size: var(--font-size-xs);
+      font-weight: var(--font-weight-semibold);
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+      color: var(--text-tertiary);
+    }
+
+    /* Submit form */
+    .leaderboard__submit {
+      margin-bottom: var(--space-6);
+    }
+
+    .leaderboard__submit p {
+      font-size: var(--font-size-sm);
+      color: var(--text-secondary);
+      margin: 0 0 var(--space-4) 0;
+    }
+
+    .leaderboard__submit-row {
+      display: flex;
+      gap: var(--space-3);
+      align-items: center;
+      flex-wrap: wrap;
+      max-width: 50%;
+    }
+
+    @media (max-width: 768px) {
+      .leaderboard__submit-row {
+        max-width: 100%;
+      }
+    }
+
+    .leaderboard__input {
+      flex: 1;
+      min-width: 150px;
+      padding: 10px 16px;
+      font-size: var(--font-size-sm);
+      font-family: var(--font-family-primary);
+      border: 1px solid var(--color-neutral-300);
+      border-radius: var(--radius-full);
+      background: var(--bg-primary);
+      color: var(--text-primary);
+      outline: none;
+      transition: border-color var(--transition-fast);
+    }
+    .leaderboard__input:focus {
+      border-color: var(--color-accent);
+    }
+    [data-theme="dark"] .leaderboard__input {
+      background: var(--color-neutral-800);
+      border-color: var(--color-neutral-700);
+    }
+    [data-theme="dark"] .leaderboard__input:focus {
+      border-color: var(--color-accent);
+    }
+
+    .leaderboard__submit-btn {
+      padding: 10px 24px !important;
+      margin-bottom: 0 !important;
+      white-space: nowrap;
+      overflow: hidden;
+      transition: width 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    .leaderboard__submit-btn .btn-anon {
+      display: inline-block;
+      transition: opacity 0.3s ease, transform 0.3s ease;
+    }
+
+    .leaderboard__submit-btn .btn-anon.hidden {
+      opacity: 0;
+      transform: translateX(8px);
+    }
+
+    .leaderboard__submitted {
+      font-size: var(--font-size-sm);
+      color: var(--color-accent);
+      font-weight: var(--font-weight-medium);
+    }
+
+    /* Table */
+    .leaderboard__table-wrap {
+      border: 1px solid var(--color-neutral-200);
+      border-radius: var(--radius-sm);
+      overflow: hidden;
+    }
+    [data-theme="dark"] .leaderboard__table-wrap {
+      border-color: var(--color-neutral-700);
+    }
+
+    .leaderboard__table {
+      width: 100%;
+      border-collapse: separate;
+      border-spacing: 0;
+      font-size: var(--font-size-sm);
+    }
+
+    .leaderboard__table th {
+      background: var(--color-neutral-100);
+      font-size: var(--font-size-xs);
+      font-weight: var(--font-weight-semibold);
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+      color: var(--text-tertiary);
+      padding: var(--space-3) var(--space-4);
+      text-align: left;
+      border-bottom: 1px solid var(--color-neutral-200);
+      cursor: pointer;
+      user-select: none;
+      transition: color 0.2s ease;
+    }
+    .leaderboard__table th:hover {
+      color: var(--color-accent);
+    }
+    .leaderboard__table th .sort-arrow {
+      display: inline-block;
+      margin-left: 4px;
+      font-size: 10px;
+      opacity: 0.4;
+    }
+    .leaderboard__table th .sort-arrow.active {
+      opacity: 1;
+      color: var(--color-accent);
+    }
+    @media (max-width: 768px) {
+      .leaderboard__table th .sort-arrow {
+        display: block;
+        margin-left: 0;
+      }
+    }
+    [data-theme="dark"] .leaderboard__table th {
+      background: var(--color-neutral-800);
+      border-bottom-color: var(--color-neutral-700);
+    }
+
+    .leaderboard__table td {
+      padding: var(--space-3) var(--space-4);
+      color: var(--text-primary);
+      border-bottom: 1px solid var(--color-neutral-200);
+      text-align: left;
+    }
+    [data-theme="dark"] .leaderboard__table td {
+      border-bottom-color: var(--color-neutral-700);
+    }
+
+    .leaderboard__table tr:last-child td {
+      border-bottom: none;
+    }
+
+    .leaderboard__table tr.current-user td {
+      background: color-mix(in srgb, var(--color-accent) 6%, transparent);
+      color: var(--color-accent);
+      font-weight: var(--font-weight-medium);
+    }
+
+    .leaderboard__empty {
+      text-align: center;
+      padding: var(--space-8);
+      color: var(--text-tertiary);
+      font-size: var(--font-size-sm);
+    }
+
+    .leaderboard__loading {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: var(--space-4);
+      padding: var(--space-12) var(--space-8);
+    }
+
+    .leaderboard__loading-dots {
+      display: flex;
+      gap: 8px;
+    }
+
+    .leaderboard__loading-dot {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: var(--color-accent);
+      animation: dot-wave 1.4s ease-in-out infinite;
+    }
+
+    .leaderboard__loading-dot:nth-child(2) {
+      animation-delay: 0.16s;
+    }
+
+    .leaderboard__loading-dot:nth-child(3) {
+      animation-delay: 0.32s;
+    }
+
+    @keyframes dot-wave {
+      0%, 60%, 100% {
+        transform: translateY(0);
+        opacity: 0.4;
+      }
+      30% {
+        transform: translateY(-16px);
+        opacity: 1;
+      }
+    }
+
+    .leaderboard__loading-text {
+      color: var(--color-accent);
+      font-size: var(--font-size-sm);
+      font-weight: var(--font-weight-medium);
+      letter-spacing: 0.05em;
+    }
+  </style>
+  <noscript>
+    <style>
+      body { opacity: 1 !important; }
+    </style>
+  </noscript>
+</head>
+<body>
+  <!-- Navigation -->
+  <nav class="nav">
+    <div class="nav-container">
+      <a href="../../../../../index.html" class="logo">
+        <div class="logo-container">
+          <div class="logo-svg"></div>
+          <span class="logo-text">Jerimy Brown</span>
+        </div>
+      </a>
+      <div class="nav-right">
+        <ul class="nav-links">
+          <li><a href="../../../../../index.html"><span class="link-text">Home</span></a></li>
+          <li><a href="../../../../../index.html#projects"><span class="link-text">Work</span></a></li>
+          <li><a href="../../../../../index.html#about"><span class="link-text">About</span></a></li>
+          <li><a href="../../../../../index.html#contact"><span class="link-text">Contact</span></a></li>
+          <li><a href="../../../../../blog.html" class="active"><span class="link-text">Blog</span></a></li>
+          <li><a href="../../../../../lab.html"><span class="link-text">Lab</span></a></li>
+          <li><a href="../../../../../resume.html"><span class="link-text">Resume</span></a></li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Mobile Menu Toggle Button -->
+  <button class="nav-mobile-toggle" onclick="toggleMobileMenu()" aria-label="Toggle mobile menu">
+    <span class="hamburger-bar"></span>
+    <span class="hamburger-bar"></span>
+    <span class="hamburger-bar"></span>
+  </button>
+
+  <!-- Mobile Menu Overlay -->
+  <div class="mobile-menu-overlay" id="mobileMenuOverlay">
+    <div class="mobile-menu-content">
+      <nav class="mobile-nav">
+        <a href="../../../../../index.html" onclick="toggleMobileMenu(event)"><span class="mobile-link-text">Home</span></a>
+        <a href="../../../../../index.html#projects" onclick="toggleMobileMenu(event)"><span class="mobile-link-text">Work</span></a>
+        <a href="../../../../../index.html#about" onclick="toggleMobileMenu(event)"><span class="mobile-link-text">About</span></a>
+        <a href="../../../../../index.html#contact" onclick="toggleMobileMenu(event)"><span class="mobile-link-text">Contact</span></a>
+        <a href="../../../../../blog.html" onclick="toggleMobileMenu(event)" class="active"><span class="mobile-link-text">Blog</span></a>
+        <a href="../../../../../lab.html" onclick="toggleMobileMenu(event)"><span class="mobile-link-text">Lab</span></a>
+        <a href="../../../../../resume.html" onclick="toggleMobileMenu(event)"><span class="mobile-link-text">Resume</span></a>
+      </nav>
+    </div>
+  </div>
+
+  <!-- Page Content -->
+  <main class="interactive-demo">
+    <div class="container">
+      <!-- Back link -->
+      <a href="../../../../../blog/back-from-the-dead.html" class="blog-back-link">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none">
+          <path d="M19 12H5M5 12L12 19M5 12L12 5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+        Back to Post
+      </a>
+
+      <div id="root"></div>
+    </div>
+  </main>
+
+  <!-- Back to Blog Button -->
+  <a href="../../../../../blog/back-from-the-dead.html" class="btn-arrow btn-arrow-md back-to-projects">
+    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <path d="M18 12L6 12M10 8L6 12L10 16" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+    </svg>
+  </a>
+
+  <!-- Back to Top Button -->
+  <button class="btn-arrow btn-arrow-md btn-arrow-filled back-to-top" onclick="scrollToTop()">
+    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <path d="M12 18L12 6M8 10L12 6L16 10" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+    </svg>
+  </button>
+
+  <!-- Site Scripts -->
+  <script src="../../../../../assets/js/core/config.js"></script>
+  <script src="../../../../../assets/js/core/data-loader.js"></script>
+  <script src="../../../../../assets/js/core/theme-system.js"></script>
+  <script src="../../../../../assets/js/utils/helpers.js"></script>
+  <script src="../../../../../assets/js/utils/animations.js"></script>
+  <script src="../../../../../assets/js/components/navigation.js"></script>
+  <script src="../../../../../assets/js/components/mobile-menu.js"></script>
+  <script src="../../../../../assets/js/components/logo-animation.js"></script>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      if (typeof initTheme === 'function') initTheme();
+      if (typeof initLogoLetterAnimation === 'function') initLogoLetterAnimation();
+      if (typeof initBackToTop === 'function') initBackToTop();
+      if (typeof initPageTransitions === 'function') initPageTransitions();
+      if (typeof initNavigationActiveState === 'function') initNavigationActiveState();
+      if (typeof initMobileMenuClose === 'function') initMobileMenuClose();
+    });
+  </script>
+
+  <!-- React Interactive Demo -->
+  <script type="text/babel">
+    const { useState, useEffect, useRef, useCallback } = React;
+
+    // ==========================================
+    // Constants
+    // ==========================================
+    const TARGET_ORDER = [4, 3, 5, 2, 1];
+
+    const PHASES = {
+      IDLE_1: 'IDLE_1',
+      RUNNING_1: 'RUNNING_1',
+      COMPLETE_1: 'COMPLETE_1',
+      IDLE_2: 'IDLE_2',
+      RUNNING_2: 'RUNNING_2',
+      COMPLETE_2: 'COMPLETE_2',
+      RESULTS: 'RESULTS',
+    };
+
+    const PATTERN_CONFIG = {
+      1: {
+        patternLabel: 'Pattern One',
+        title: 'The Suspect (Bad UX)',
+        description: 'This is a reorderable list pulled straight from one of the most widely used component libraries in the industry. It works. Technically.',
+        cta: true,
+      },
+      2: {
+        patternLabel: 'Pattern Two',
+        title: 'The Resurrection (Good UX)',
+        description: 'Same task. Same goal. Very different experience. This version was designed from scratch with direct manipulation, micro interactions, and purposeful animation.',
+        cta: true,
+      },
+    };
+
+    // ==========================================
+    // Shared utilities
+    // ==========================================
+    const Icon = ({ name, size = 20 }) => {
+      const ref = React.useRef(null);
+      useEffect(() => {
+        if (ref.current) {
+          ref.current.innerHTML = '';
+          const icon = lucide.createElement(lucide.icons[name]);
+          icon.setAttribute('width', size);
+          icon.setAttribute('height', size);
+          ref.current.appendChild(icon);
+        }
+      }, [name, size]);
+      return <span ref={ref} style={{ display: 'inline-flex', alignItems: 'center', justifyContent: 'center' }} />;
+    };
+
+    const initialItems = [
+      { id: 1, title: '1. List Item One', priority: 'High' },
+      { id: 2, title: '2. List Item Two', priority: 'Medium' },
+      { id: 3, title: '3. List Item Three', priority: 'Low' },
+      { id: 4, title: '4. List Item Four', priority: 'High' },
+      { id: 5, title: '5. List Item Five', priority: 'Medium' },
+    ];
+
+    const reorder = (list, fromIndex, toIndex) => {
+      const result = Array.from(list);
+      const [removed] = result.splice(fromIndex, 1);
+      result.splice(toIndex, 0, removed);
+      return result;
+    };
+
+    const formatTime = (ms) => {
+      const totalSeconds = ms / 1000;
+      if (totalSeconds < 60) {
+        return `${totalSeconds.toFixed(1)}s`;
+      }
+      const minutes = Math.floor(totalSeconds / 60);
+      const seconds = (totalSeconds % 60).toFixed(1);
+      return `${minutes}:${seconds.padStart(4, '0')}`;
+    };
+
+    const isOrderComplete = (items) => {
+      return items.every((item, i) => item.id === TARGET_ORDER[i]);
+    };
+
+    // ==========================================
+    // Drag & Drop Hook
+    // ==========================================
+    const useDragAndDrop = (items, setItems, itemHeight = 60) => {
+      const [draggedIndex, setDraggedIndex] = useState(null);
+      const [targetIndex, setTargetIndex] = useState(null);
+      const [dragPosition, setDragPosition] = useState({ x: 0, y: 0 });
+      const [dragOffset, setDragOffset] = useState({ x: 0, y: 0 });
+      const [itemWidth, setItemWidth] = useState(0);
+      const [moveFrom, setMoveFrom] = useState(null);
+      const [moveTo, setMoveTo] = useState(null);
+      const isAnimating = useRef(false);
+      const containerRef = useRef(null);
+      const itemRefs = useRef([]);
+
+      const getPointerPos = (e) => {
+        if (e.touches && e.touches.length > 0) return { x: e.touches[0].clientX, y: e.touches[0].clientY };
+        if (e.changedTouches && e.changedTouches.length > 0) return { x: e.changedTouches[0].clientX, y: e.changedTouches[0].clientY };
+        return { x: e.clientX, y: e.clientY };
+      };
+
+      const handlePointerDown = (e, index) => {
+        if (!e.target.closest('.drag-handle')) return;
+        if (isAnimating.current) return;
+        e.preventDefault();
+        const rect = itemRefs.current[index]?.getBoundingClientRect();
+        if (!rect) return;
+        const pos = getPointerPos(e);
+        setDraggedIndex(index);
+        setTargetIndex(index);
+        setItemWidth(rect.width);
+        setDragOffset({ x: pos.x - rect.left, y: pos.y - rect.top });
+        setDragPosition({ x: rect.left, y: rect.top });
+      };
+
+      const handlePointerMove = useCallback((e) => {
+        if (draggedIndex === null) return;
+        e.preventDefault();
+        const pos = getPointerPos(e);
+        setDragPosition({ x: pos.x - dragOffset.x, y: pos.y - dragOffset.y });
+        if (!containerRef.current) return;
+        const containerRect = containerRef.current.getBoundingClientRect();
+        const relativeY = pos.y - containerRect.top;
+        let newTarget = Math.floor(relativeY / (itemHeight + 4));
+        newTarget = Math.max(0, Math.min(items.length - 1, newTarget));
+        if (newTarget !== targetIndex) setTargetIndex(newTarget);
+      }, [draggedIndex, dragOffset, itemHeight, items.length, targetIndex]);
+
+      const handlePointerUp = useCallback((e) => {
+        if (draggedIndex === null || targetIndex === null) return;
+        if (targetIndex !== draggedIndex) setItems(reorder(items, draggedIndex, targetIndex));
+        setDraggedIndex(null);
+        setTargetIndex(null);
+      }, [draggedIndex, targetIndex, items, setItems]);
+
+      const animatedMove = useCallback((fromIndex, toIndex) => {
+        if (fromIndex === toIndex || isAnimating.current) return;
+        isAnimating.current = true;
+        setMoveFrom(fromIndex);
+        setMoveTo(toIndex);
+        setTimeout(() => {
+          setItems(reorder(items, fromIndex, toIndex));
+          setMoveFrom(null);
+          setMoveTo(null);
+          isAnimating.current = false;
+        }, 200);
+      }, [items, setItems]);
+
+      useEffect(() => {
+        if (draggedIndex !== null) {
+          window.addEventListener('mousemove', handlePointerMove);
+          window.addEventListener('mouseup', handlePointerUp);
+          window.addEventListener('touchmove', handlePointerMove, { passive: false });
+          window.addEventListener('touchend', handlePointerUp);
+          document.body.style.userSelect = 'none';
+          document.body.style.cursor = 'grabbing';
+          document.body.style.touchAction = 'none';
+        }
+        return () => {
+          window.removeEventListener('mousemove', handlePointerMove);
+          window.removeEventListener('mouseup', handlePointerUp);
+          window.removeEventListener('touchmove', handlePointerMove);
+          window.removeEventListener('touchend', handlePointerUp);
+          document.body.style.userSelect = '';
+          document.body.style.cursor = '';
+          document.body.style.touchAction = '';
+        };
+      }, [draggedIndex, handlePointerMove, handlePointerUp]);
+
+      const getItemStyle = (index) => {
+        const shiftAmount = itemHeight + 4;
+        if (moveFrom !== null && moveTo !== null) {
+          if (index === moveFrom) {
+            const distance = (moveTo - moveFrom) * shiftAmount;
+            return { transition: 'transform 0.2s ease', transform: `translateY(${distance}px)`, zIndex: 10, position: 'relative' };
+          }
+          if (moveFrom < moveTo) {
+            if (index > moveFrom && index <= moveTo) return { transition: 'transform 0.2s ease', transform: `translateY(-${shiftAmount}px)` };
+          } else {
+            if (index >= moveTo && index < moveFrom) return { transition: 'transform 0.2s ease', transform: `translateY(${shiftAmount}px)` };
+          }
+          return { transition: 'transform 0.2s ease', transform: 'translateY(0)' };
+        }
+        if (draggedIndex === null || targetIndex === null) return {};
+        if (index === draggedIndex) return { visibility: 'hidden' };
+        if (draggedIndex < targetIndex) {
+          if (index > draggedIndex && index <= targetIndex) return { transition: 'transform 0.2s ease', transform: `translateY(-${shiftAmount}px)` };
+        } else if (draggedIndex > targetIndex) {
+          if (index >= targetIndex && index < draggedIndex) return { transition: 'transform 0.2s ease', transform: `translateY(${shiftAmount}px)` };
+        }
+        return { transition: 'transform 0.2s ease', transform: 'translateY(0)' };
+      };
+
+      return { draggedIndex, targetIndex, dragPosition, itemWidth, containerRef, itemRefs, handlePointerDown, getItemStyle, animatedMove, isAnimating: moveFrom !== null };
+    };
+
+    const DragOverlay = ({ item, position, width, children }) => {
+      if (!item) return null;
+      return ReactDOM.createPortal(
+        <div className="dragging-item" style={{ left: position.x, top: position.y, width: width }}>{children}</div>,
+        document.body
+      );
+    };
+
+    // ==========================================
+    // Variant 0: PrimeNG-style (Bad UX)
+    // ==========================================
+    const VariantOriginal = ({ items, setItems, onInteraction }) => {
+      const [selectedIds, setSelectedIds] = useState(new Set());
+      const [lastClickedId, setLastClickedId] = useState(null);
+
+      const handleItemClick = (e, item) => {
+        if (onInteraction) onInteraction();
+        const id = item.id;
+        const isShiftKey = e.shiftKey;
+        setSelectedIds(prev => {
+          const next = new Set(prev);
+          if (isShiftKey && lastClickedId !== null) {
+            const lastIndex = items.findIndex(i => i.id === lastClickedId);
+            const currentIndex = items.findIndex(i => i.id === id);
+            const start = Math.min(lastIndex, currentIndex);
+            const end = Math.max(lastIndex, currentIndex);
+            for (let i = start; i <= end; i++) next.add(items[i].id);
+          } else {
+            if (next.has(id)) next.delete(id);
+            else next.add(id);
+          }
+          return next;
+        });
+        if (!e.shiftKey) setLastClickedId(id);
+      };
+
+      const selectedIndices = items.map((item, index) => selectedIds.has(item.id) ? index : -1).filter(i => i !== -1);
+      const hasSelection = selectedIndices.length > 0;
+      const canMoveUp = hasSelection && selectedIndices[0] > 0;
+      const canMoveDown = hasSelection && selectedIndices[selectedIndices.length - 1] < items.length - 1;
+
+      const moveItems = (direction) => {
+        if (!hasSelection) return;
+        const result = Array.from(items);
+        const selectedSet = new Set(selectedIds);
+        if (direction === 'top') {
+          const selected = selectedIndices.map(i => result[i]);
+          const rest = result.filter(item => !selectedSet.has(item.id));
+          setItems([...selected, ...rest]);
+        } else if (direction === 'bottom') {
+          const selected = selectedIndices.map(i => result[i]);
+          const rest = result.filter(item => !selectedSet.has(item.id));
+          setItems([...rest, ...selected]);
+        } else if (direction === 'up') {
+          if (!canMoveUp) return;
+          for (const idx of selectedIndices) {
+            if (idx > 0 && !selectedSet.has(result[idx - 1].id)) [result[idx - 1], result[idx]] = [result[idx], result[idx - 1]];
+          }
+          setItems(result);
+        } else if (direction === 'down') {
+          if (!canMoveDown) return;
+          for (let i = selectedIndices.length - 1; i >= 0; i--) {
+            const idx = selectedIndices[i];
+            if (idx < result.length - 1 && !selectedSet.has(result[idx + 1].id)) [result[idx], result[idx + 1]] = [result[idx + 1], result[idx]];
+          }
+          setItems(result);
+        }
+      };
+
+      return (
+        <div className="flex gap-3">
+          <div className="flex flex-col gap-1.5" style={{ paddingTop: '48px' }}>
+            <button onClick={() => moveItems('up')} disabled={!canMoveUp} className="ctrl-btn" title="Move up"><Icon name="ChevronUp" size={18} /></button>
+            <button onClick={() => moveItems('top')} disabled={!canMoveUp} className="ctrl-btn" title="Move to top"><Icon name="ChevronsUp" size={18} /></button>
+            <button onClick={() => moveItems('down')} disabled={!canMoveDown} className="ctrl-btn" title="Move down"><Icon name="ChevronDown" size={18} /></button>
+            <button onClick={() => moveItems('bottom')} disabled={!canMoveDown} className="ctrl-btn" title="Move to bottom"><Icon name="ChevronsDown" size={18} /></button>
+          </div>
+          <div className="flex-1 list-panel">
+            {items.map((item) => {
+              const isSelected = selectedIds.has(item.id);
+              return (
+                <div key={item.id} onClick={(e) => handleItemClick(e, item)} className={`list-item-v0 ${isSelected ? 'selected' : ''}`}>
+                  <div className="flex-1 min-w-0">
+                    <p className="item-title">{item.title}</p>
+                    <p className="item-subtitle">{item.priority} priority</p>
+                  </div>
+                </div>
+              );
+            })}
+          </div>
+        </div>
+      );
+    };
+
+    // ==========================================
+    // Variant 1: Drag & Drop (Good UX)
+    // ==========================================
+    const Variant1 = ({ items, setItems, onInteraction }) => {
+      const drag = useDragAndDrop(items, setItems, 68);
+
+      const moveItem = (index, direction) => {
+        if (onInteraction) onInteraction();
+        if (drag.isAnimating) return;
+        let newIndex;
+        switch (direction) {
+          case 'top': newIndex = 0; break;
+          case 'up': newIndex = Math.max(0, index - 1); break;
+          case 'down': newIndex = Math.min(items.length - 1, index + 1); break;
+          case 'bottom': newIndex = items.length - 1; break;
+          default: return;
+        }
+        if (newIndex !== index) drag.animatedMove(index, newIndex);
+      };
+
+      const handleDragStart = (e, index) => {
+        if (onInteraction) onInteraction();
+        drag.handlePointerDown(e, index);
+      };
+
+      const renderItem = (item, index, isOverlay = false) => (
+        <div className="list-item-v1 drag-handle" onMouseDown={!isOverlay ? (e) => handleDragStart(e, index) : undefined} onTouchStart={!isOverlay ? (e) => handleDragStart(e, index) : undefined}>
+          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', color: 'var(--text-tertiary)' }}>
+            <Icon name="GripVertical" size={20} />
+          </div>
+          <div className="flex-1 min-w-0">
+            <p className="item-title">{item.title}</p>
+            <p className="item-subtitle">{item.priority} priority</p>
+          </div>
+          <div className="flex items-center gap-1">
+            <button onClick={() => moveItem(index, 'top')} disabled={index === 0} className="ctrl-btn-inline" title="Move to top"><Icon name="ChevronsUp" size={18} /></button>
+            <button onClick={() => moveItem(index, 'up')} disabled={index === 0} className="ctrl-btn-inline" title="Move up"><Icon name="ChevronUp" size={18} /></button>
+            <button onClick={() => moveItem(index, 'down')} disabled={index === items.length - 1} className="ctrl-btn-inline" title="Move down"><Icon name="ChevronDown" size={18} /></button>
+            <button onClick={() => moveItem(index, 'bottom')} disabled={index === items.length - 1} className="ctrl-btn-inline" title="Move to bottom"><Icon name="ChevronsDown" size={18} /></button>
+          </div>
+        </div>
+      );
+
+      return (
+        <>
+          <div className="relative" ref={drag.containerRef}>
+            {items.map((item, index) => (
+              <div key={item.id} ref={el => drag.itemRefs.current[index] = el} style={{ ...drag.getItemStyle(index), marginBottom: '4px' }}>
+                {renderItem(item, index)}
+              </div>
+            ))}
+          </div>
+          <DragOverlay item={drag.draggedIndex !== null ? items[drag.draggedIndex] : null} position={drag.dragPosition} width={drag.itemWidth}>
+            {drag.draggedIndex !== null && renderItem(items[drag.draggedIndex], drag.draggedIndex, true)}
+          </DragOverlay>
+        </>
+      );
+    };
+
+    // ==========================================
+    // Test Panel (Right Column)
+    // ==========================================
+    const TestPanel = ({ phase, elapsed, time1, time2, onStart, onContinue, onReset }) => {
+      const isResults = phase === PHASES.RESULTS;
+      const isRunning = phase === PHASES.RUNNING_1 || phase === PHASES.RUNNING_2;
+      const isComplete1 = phase === PHASES.COMPLETE_1;
+      const isIdle1 = phase === PHASES.IDLE_1;
+      const isIdle2 = phase === PHASES.IDLE_2;
+      const isComplete2 = phase === PHASES.COMPLETE_2;
+      const patternNum = (phase === PHASES.IDLE_1 || phase === PHASES.RUNNING_1 || phase === PHASES.COMPLETE_1) ? 1 : 2;
+      const config = PATTERN_CONFIG[patternNum];
+
+      if (isResults) {
+        const improvement = time1 > 0 ? Math.round(((time1 - time2) / time1) * 100) : 0;
+        return (
+          <div className="test-panel">
+            <div className="results-content">
+              <h2 className="results-content__heading">The Proof</h2>
+
+              <div className="results-times">
+                <div className="results-time-block">
+                  <div className="results-time-block__label">Bad UX</div>
+                  <div className="results-time-block__value">{formatTime(time1)}</div>
+                </div>
+                <div className="results-time-block">
+                  <div className="results-time-block__label">Good UX</div>
+                  <div className="results-time-block__value">{formatTime(time2)}</div>
+                </div>
+              </div>
+
+              <div className="results-improvement">
+                <div className="results-improvement__value">{improvement}%</div>
+                <div className="results-improvement__label">faster with intentional design</div>
+              </div>
+
+              <div className="results-ctas">
+                <button className="button btn-primary" onClick={onReset}>Try Again</button>
+                <a href="../../../../../blog/back-from-the-dead.html" className="button btn-secondary">Back to Post</a>
+              </div>
+            </div>
+          </div>
+        );
+      }
+
+      return (
+        <div className="test-panel">
+          <div className="test-panel__pattern-label">{config.patternLabel}</div>
+          <h2 className="test-panel__title">{config.title}</h2>
+          <p className="test-panel__subtitle">{config.description} Your job is to reorder the list to match the <span style={{ color: 'var(--color-accent)', fontWeight: 'var(--font-weight-semibold)', textTransform: 'uppercase', letterSpacing: '0.05em', fontSize: 'var(--font-size-xs)' }}>Target Order</span> <span style={{ color: 'var(--text-primary)', fontWeight: 'var(--font-weight-semibold)' }}>(below)</span> as fast as you can.</p>
+
+          {/* Target order */}
+          <div className="target-order-label"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" style={{ marginRight: '6px', display: 'inline-block', verticalAlign: 'middle' }}><path d="M19 12H5M5 12L12 19M5 12L12 5" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"/></svg>Target Order</div>
+          <ol className="target-order">
+            <li>4. List Item Four</li>
+            <li>3. List Item Three</li>
+            <li>5. List Item Five</li>
+            <li>2. List Item Two</li>
+            <li>1. List Item One</li>
+          </ol>
+
+          {/* Pattern 2: show previous round time */}
+          {patternNum === 2 && time1 > 0 && (
+            <div className="prev-round">Round 1 time: <span>{formatTime(time1)}</span></div>
+          )}
+
+          {/* Timer — desktop only (mobile shows below list) */}
+          <div className="desktop-only">
+            {isRunning && (
+              <div className={`timer-display running`}>{formatTime(elapsed)}</div>
+            )}
+            {(isComplete1 || isComplete2) && (
+              <div className={`timer-display complete`}>{formatTime(patternNum === 1 ? time1 : time2)}</div>
+            )}
+            {isComplete1 && (
+              <button className="button btn-primary" onClick={onContinue}>Continue to Pattern Two</button>
+            )}
+          </div>
+        </div>
+      );
+    };
+
+    // ==========================================
+    // Leaderboard Submit
+    // ==========================================
+    const LeaderboardSubmit = ({ time1, time2, onSubmitted }) => {
+      const [name, setName] = useState('');
+      const [submitted, setSubmitted] = useState(false);
+      const [submitting, setSubmitting] = useState(false);
+      const btnRef = useRef(null);
+      const longRef = useRef(null);
+      const shortRef = useRef(null);
+      const [btnWidth, setBtnWidth] = useState(null);
+      const hasName = name.trim().length > 0;
+
+      // Measure both label widths on mount
+      useEffect(() => {
+        if (longRef.current) {
+          const padding = 48; // 24px each side
+          const longW = longRef.current.offsetWidth + padding;
+          const shortW = shortRef.current.offsetWidth + padding;
+          setBtnWidth(hasName ? shortW : longW);
+        }
+      }, []);
+
+      // Animate width on text change
+      useEffect(() => {
+        if (!longRef.current || !shortRef.current) return;
+        const padding = 48;
+        const longW = longRef.current.offsetWidth + padding;
+        const shortW = shortRef.current.offsetWidth + padding;
+        setBtnWidth(hasName ? shortW : longW);
+      }, [hasName]);
+
+      const submit = async (displayName) => {
+        if (submitting) return;
+        setSubmitting(true);
+        const improvement = time1 > 0 ? Math.round(((time1 - time2) / time1) * 100) : 0;
+        try {
+          await window.db.collection('results').add({
+            name: displayName,
+            time1,
+            time2,
+            improvement,
+            timestamp: firebase.firestore.FieldValue.serverTimestamp(),
+          });
+          setSubmitted(true);
+          if (onSubmitted) onSubmitted();
+        } catch (e) {
+          console.error('Failed to submit result:', e);
+        }
+        setSubmitting(false);
+      };
+
+      if (submitted) {
+        return (
+          <div className="leaderboard__submit">
+            <p className="leaderboard__submitted">Your result has been added to the leaderboard.</p>
+          </div>
+        );
+      }
+
+      return (
+        <div className="leaderboard__submit">
+          <p>Add your name to the leaderboard or submit anonymously.</p>
+          <div className="leaderboard__submit-row">
+            <input
+              type="text"
+              className="leaderboard__input"
+              placeholder="Your name"
+              value={name}
+              onChange={(e) => setName(e.target.value)}
+              onKeyDown={(e) => { if (e.key === 'Enter' && name.trim()) submit(name.trim()); }}
+              maxLength={30}
+              autoComplete="off"
+              data-1p-ignore="true"
+              data-lpignore="true"
+              data-form-type="other"
+            />
+            {/* Hidden measurement spans */}
+            <span ref={longRef} style={{ position: 'absolute', visibility: 'hidden', whiteSpace: 'nowrap', fontSize: '15px', fontWeight: 500 }}>Submit Anonymously</span>
+            <span ref={shortRef} style={{ position: 'absolute', visibility: 'hidden', whiteSpace: 'nowrap', fontSize: '15px', fontWeight: 500 }}>Submit</span>
+            <button
+              ref={btnRef}
+              className="button btn-primary leaderboard__submit-btn"
+              style={btnWidth ? { width: btnWidth + 'px' } : {}}
+              onClick={() => submit(name.trim() || 'Anonymous')}
+              disabled={submitting}
+            >
+              Submit<span className={`btn-anon ${hasName ? 'hidden' : ''}`}>&nbsp;Anonymously</span>
+            </button>
+          </div>
+        </div>
+      );
+    };
+
+    // ==========================================
+    // Leaderboard Table
+    // ==========================================
+    const Leaderboard = ({ refreshKey, currentImprovement }) => {
+      const [entries, setEntries] = useState([]);
+      const [loading, setLoading] = useState(true);
+      const [sortField, setSortField] = useState('improvement');
+      const [sortDir, setSortDir] = useState('desc');
+
+      const handleSort = (field) => {
+        if (field === sortField) {
+          setSortDir(d => d === 'desc' ? 'asc' : 'desc');
+        } else {
+          setSortField(field);
+          setSortDir(field === 'name' ? 'asc' : 'desc');
+        }
+      };
+
+      const SortArrow = ({ field }) => {
+        const isActive = sortField === field;
+        const arrow = isActive ? (sortDir === 'asc' ? '▲' : '▼') : '▲';
+        return React.createElement('span', { className: `sort-arrow${isActive ? ' active' : ''}` }, arrow);
+      };
+
+      const isSlowLoad = new URLSearchParams(window.location.search).has('slow-load');
+
+      const fetchEntries = async () => {
+        try {
+          if (isSlowLoad) await new Promise(r => setTimeout(r, 5000));
+          const snapshot = await window.db.collection('results')
+            .orderBy('timestamp', 'desc')
+            .limit(50)
+            .get();
+          const data = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+          setEntries(data);
+        } catch (e) {
+          console.error('Failed to fetch leaderboard:', e);
+        }
+        setLoading(false);
+      };
+
+      useEffect(() => {
+        fetchEntries();
+      }, [refreshKey]);
+
+      if (loading) {
+        return (
+          <div className="leaderboard">
+            <h3 className="leaderboard__title">Leaderboard</h3>
+            <div className="leaderboard__loading">
+              <div className="leaderboard__loading-dots">
+                <div className="leaderboard__loading-dot"></div>
+                <div className="leaderboard__loading-dot"></div>
+                <div className="leaderboard__loading-dot"></div>
+              </div>
+              <div className="leaderboard__loading-text">Leaderboard loading</div>
+            </div>
+          </div>
+        );
+      }
+
+      if (entries.length === 0) {
+        return (
+          <div className="leaderboard">
+            <h3 className="leaderboard__title">Leaderboard</h3>
+            <div className="leaderboard__empty">Be the first to take the test!</div>
+          </div>
+        );
+      }
+
+      // Compute summary stats
+      const totalParticipants = entries.length;
+      const avgTime1 = Math.round(entries.reduce((sum, e) => sum + e.time1, 0) / totalParticipants);
+      const avgTime2 = Math.round(entries.reduce((sum, e) => sum + e.time2, 0) / totalParticipants);
+      const avgImprovement = Math.round(entries.reduce((sum, e) => sum + e.improvement, 0) / totalParticipants);
+
+      // Sort entries by selected column
+      const sorted = [...entries].sort((a, b) => {
+        const aVal = a[sortField];
+        const bVal = b[sortField];
+        const cmp = typeof aVal === 'string' ? aVal.localeCompare(bVal) : aVal - bVal;
+        return sortDir === 'asc' ? cmp : -cmp;
+      });
+
+      return (
+        <div className="leaderboard">
+          <h3 className="leaderboard__title">Leaderboard</h3>
+
+          <div className="leaderboard__summary">
+            <div className="leaderboard__stat">
+              <div className="leaderboard__stat-value">{totalParticipants}</div>
+              <div className="leaderboard__stat-label">Participants</div>
+            </div>
+            <div className="leaderboard__stat">
+              <div className="leaderboard__stat-value">{formatTime(avgTime1)}</div>
+              <div className="leaderboard__stat-label">Avg Bad UX</div>
+            </div>
+            <div className="leaderboard__stat">
+              <div className="leaderboard__stat-value">{formatTime(avgTime2)}</div>
+              <div className="leaderboard__stat-label">Avg Good UX</div>
+            </div>
+            <div className="leaderboard__stat">
+              <div className="leaderboard__stat-value leaderboard__stat-value--accent">{avgImprovement}%</div>
+              <div className="leaderboard__stat-label">Avg Improvement</div>
+            </div>
+          </div>
+
+          <div className="leaderboard__table-wrap">
+            <table className="leaderboard__table">
+              <thead>
+                <tr>
+                  <th onClick={() => handleSort('name')}>Name <SortArrow field="name" /></th>
+                  <th onClick={() => handleSort('time1')}>Bad UX <SortArrow field="time1" /></th>
+                  <th onClick={() => handleSort('time2')}>Good UX <SortArrow field="time2" /></th>
+                  <th onClick={() => handleSort('improvement')}><span className="mobile-only-inline">Gain</span><span className="desktop-only-inline">Improvement</span> <SortArrow field="improvement" /></th>
+                </tr>
+              </thead>
+              <tbody>
+                {sorted.map((entry) => (
+                  <tr key={entry.id} className={entry.improvement === currentImprovement ? 'current-user' : ''}>
+                    <td>{entry.name}</td>
+                    <td>{formatTime(entry.time1)}</td>
+                    <td>{formatTime(entry.time2)}</td>
+                    <td>{entry.improvement}%</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        </div>
+      );
+    };
+
+    // ==========================================
+    // Main App
+    // ==========================================
+    // Map hash to initial phase, with sessionStorage fallback
+    const getInitialPhase = () => {
+      const hash = window.location.hash.replace(/[^a-z0-9#-]/gi, '');
+      if (hash.includes('results')) return PHASES.RESULTS;
+      if (hash.includes('pattern-2')) return PHASES.IDLE_2;
+      const savedPhase = sessionStorage.getItem('reorder-test-phase');
+      if (savedPhase === 'RESULTS' && sessionStorage.getItem('reorder-test-time1') && sessionStorage.getItem('reorder-test-time2')) {
+        return PHASES.RESULTS;
+      }
+      return PHASES.IDLE_1;
+    };
+
+    function App() {
+      const [phase, setPhase] = useState(getInitialPhase);
+      const [items, setItems] = useState([...initialItems]);
+      const [time1, setTime1] = useState(() => {
+        const saved = sessionStorage.getItem('reorder-test-time1');
+        if (saved) return Number(saved);
+        return getInitialPhase() === PHASES.RESULTS ? 22000 : 0;
+      });
+      const [time2, setTime2] = useState(() => {
+        const saved = sessionStorage.getItem('reorder-test-time2');
+        if (saved) return Number(saved);
+        return getInitialPhase() === PHASES.RESULTS ? 6500 : 0;
+      });
+      const [elapsed, setElapsed] = useState(0);
+      const startTimeRef = useRef(null);
+      const intervalRef = useRef(null);
+      const [leaderboardKey, setLeaderboardKey] = useState(0);
+      const isResults = phase === PHASES.RESULTS;
+
+      // Timer management
+      const startTimer = () => {
+        startTimeRef.current = Date.now();
+        setElapsed(0);
+        intervalRef.current = setInterval(() => {
+          setElapsed(Date.now() - startTimeRef.current);
+        }, 100);
+      };
+
+      const stopTimer = () => {
+        if (intervalRef.current) {
+          clearInterval(intervalRef.current);
+          intervalRef.current = null;
+        }
+        return Date.now() - startTimeRef.current;
+      };
+
+      // Cleanup on unmount
+      useEffect(() => {
+        return () => {
+          if (intervalRef.current) clearInterval(intervalRef.current);
+        };
+      }, []);
+
+      // Force scroll to top helper — fires after paint to beat layout shifts
+      const forceScrollTop = () => {
+        window.scrollTo(0, 0);
+        requestAnimationFrame(() => window.scrollTo(0, 0));
+        setTimeout(() => window.scrollTo(0, 0), 50);
+      };
+
+      // Disable browser scroll restoration and scroll to top on mount
+      useEffect(() => {
+        if ('scrollRestoration' in history) {
+          history.scrollRestoration = 'manual';
+        }
+        forceScrollTop();
+      }, []);
+
+      // Scroll to top when entering pattern 2 idle or results
+      useEffect(() => {
+        if (phase === PHASES.IDLE_2 || phase === PHASES.RESULTS) {
+          forceScrollTop();
+        }
+      }, [phase]);
+
+      // Sync hash with phase
+      useEffect(() => {
+        const hashMap = {
+          [PHASES.IDLE_1]: '#pattern-1',
+          [PHASES.RUNNING_1]: '#pattern-1',
+          [PHASES.COMPLETE_1]: '#pattern-1',
+          [PHASES.IDLE_2]: '#pattern-2',
+          [PHASES.RUNNING_2]: '#pattern-2',
+          [PHASES.COMPLETE_2]: '#pattern-2',
+          [PHASES.RESULTS]: '#results',
+        };
+        const newHash = hashMap[phase] || '';
+        if (window.location.hash !== newHash) {
+          history.replaceState(null, '', newHash);
+        }
+      }, [phase]);
+
+      // Auto-detect completion
+      useEffect(() => {
+        if (phase === PHASES.RUNNING_1 && isOrderComplete(items)) {
+          const finalTime = stopTimer();
+          setTime1(finalTime);
+          sessionStorage.setItem('reorder-test-time1', finalTime);
+          setPhase(PHASES.COMPLETE_1);
+        } else if (phase === PHASES.RUNNING_2 && isOrderComplete(items)) {
+          const finalTime = stopTimer();
+          setTime2(finalTime);
+          sessionStorage.setItem('reorder-test-time2', finalTime);
+          setPhase(PHASES.COMPLETE_2);
+          // Auto-advance to results after a brief pause (desktop only)
+          if (window.innerWidth > 768) {
+            setTimeout(() => {
+              sessionStorage.setItem('reorder-test-phase', 'RESULTS');
+              setPhase(PHASES.RESULTS);
+            }, 800);
+          }
+        }
+      }, [items, phase]);
+
+      const handleStart = () => {
+        if (phase === PHASES.IDLE_1) {
+          setPhase(PHASES.RUNNING_1);
+          startTimer();
+        } else if (phase === PHASES.IDLE_2) {
+          setPhase(PHASES.RUNNING_2);
+          startTimer();
+        }
+      };
+
+      const handleContinue = () => {
+        setItems([...initialItems]);
+        setPhase(PHASES.IDLE_2);
+      };
+
+      const handleReset = () => {
+        setItems([...initialItems]);
+        setTime1(0);
+        setTime2(0);
+        setElapsed(0);
+        startTimeRef.current = null;
+        setShowMobileResults(false);
+        sessionStorage.removeItem('reorder-test-time1');
+        sessionStorage.removeItem('reorder-test-time2');
+        sessionStorage.removeItem('reorder-test-phase');
+        setPhase(PHASES.IDLE_1);
+        forceScrollTop();
+      };
+
+      // Determine which variant to show
+      const isPattern1 = phase === PHASES.IDLE_1 || phase === PHASES.RUNNING_1 || phase === PHASES.COMPLETE_1;
+      const isPattern2 = phase === PHASES.IDLE_2 || phase === PHASES.RUNNING_2 || phase === PHASES.COMPLETE_2;
+      const isRunning = phase === PHASES.RUNNING_1 || phase === PHASES.RUNNING_2;
+
+      // Auto-start timer if user interacts before clicking Start
+      const autoStartIfIdle = () => {
+        if (phase === PHASES.IDLE_1) {
+          setPhase(PHASES.RUNNING_1);
+          startTimer();
+        } else if (phase === PHASES.IDLE_2) {
+          setPhase(PHASES.RUNNING_2);
+          startTimer();
+        }
+      };
+
+      // Wrapper for items that auto-starts timer on first interaction
+      const setItemsWrapped = (newItems) => {
+        autoStartIfIdle();
+        if (typeof newItems === 'function') {
+          setItems(prev => {
+            const result = newItems(prev);
+            return result;
+          });
+        } else {
+          setItems(newItems);
+        }
+      };
+
+      const currentImprovement = time1 > 0 ? Math.round(((time1 - time2) / time1) * 100) : null;
+
+      const isComplete1 = phase === PHASES.COMPLETE_1;
+      const isComplete2 = phase === PHASES.COMPLETE_2;
+      const isComplete = isComplete1 || isComplete2;
+      const mobileCompletionRef = useRef(null);
+      const mobileResultsRef = useRef(null);
+      const [showMobileResults, setShowMobileResults] = useState(false);
+      const patternNum = (phase === PHASES.IDLE_1 || phase === PHASES.RUNNING_1 || phase === PHASES.COMPLETE_1) ? 1 : 2;
+      const improvement = time1 > 0 ? Math.round(((time1 - time2) / time1) * 100) : 0;
+
+      // Scroll to mobile completion area when test is done
+      useEffect(() => {
+        if (isComplete && mobileCompletionRef.current && window.innerWidth <= 768) {
+          setTimeout(() => {
+            mobileCompletionRef.current.scrollIntoView({ behavior: 'smooth', block: 'center' });
+          }, 100);
+        }
+      }, [isComplete]);
+
+      // Scroll to mobile results when revealed
+      useEffect(() => {
+        if (showMobileResults && mobileResultsRef.current) {
+          setTimeout(() => {
+            mobileResultsRef.current.scrollIntoView({ behavior: 'smooth', block: 'start' });
+          }, 100);
+        }
+      }, [showMobileResults]);
+
+      const handleShowMobileResults = () => {
+        sessionStorage.setItem('reorder-test-phase', 'RESULTS');
+        setShowMobileResults(true);
+      };
+
+      return (
+        <>
+          <div className={`test-layout ${isResults ? 'results-mode' : ''}`}>
+            {/* Left Column: List */}
+            <div className="test-layout__list">
+              <div className="list-container">
+                {isPattern1 && <VariantOriginal items={items} setItems={setItemsWrapped} onInteraction={autoStartIfIdle} />}
+                {isPattern2 && <Variant1 items={items} setItems={setItemsWrapped} onInteraction={autoStartIfIdle} />}
+              </div>
+
+              {/* Mobile: Timer and completion below list */}
+              <div className="mobile-only" ref={mobileCompletionRef}>
+                {isRunning && (
+                  <div className={`timer-display running`}>{formatTime(elapsed)}</div>
+                )}
+                {isComplete && (
+                  <div className={`timer-display complete`}>{formatTime(patternNum === 1 ? time1 : time2)}</div>
+                )}
+                {isComplete1 && (
+                  <button className="button btn-primary" onClick={handleContinue}>Continue to Pattern Two</button>
+                )}
+                {isComplete2 && !showMobileResults && (
+                  <button className="button btn-primary" onClick={handleShowMobileResults}>See Results</button>
+                )}
+              </div>
+
+              {/* Mobile: Inline results after pattern 2 */}
+              {isComplete2 && showMobileResults && (
+                <div className="mobile-only mobile-results-inline" ref={mobileResultsRef}>
+                  <div className="results-content">
+                    <h2 className="results-content__heading">The Proof</h2>
+                    <div className="results-times">
+                      <div className="results-time-block">
+                        <div className="results-time-block__label">Bad UX</div>
+                        <div className="results-time-block__value">{formatTime(time1)}</div>
+                      </div>
+                      <div className="results-time-block">
+                        <div className="results-time-block__label">Good UX</div>
+                        <div className="results-time-block__value">{formatTime(time2)}</div>
+                      </div>
+                    </div>
+                    <div className="results-improvement">
+                      <div className="results-improvement__value">{improvement}%</div>
+                      <div className="results-improvement__label">faster with intentional design</div>
+                    </div>
+                    <div className="results-ctas">
+                      <button className="button btn-primary" onClick={handleReset}>Try Again</button>
+                      <a href="../../../../../blog/back-from-the-dead.html" className="button btn-secondary">Back to Post</a>
+                    </div>
+                  </div>
+                  <LeaderboardSubmit
+                    time1={time1}
+                    time2={time2}
+                    onSubmitted={() => setLeaderboardKey(k => k + 1)}
+                  />
+                  <Leaderboard
+                    refreshKey={leaderboardKey}
+                    currentImprovement={currentImprovement}
+                  />
+                </div>
+              )}
+            </div>
+
+            {/* Right Column: Panel */}
+            <div className="test-layout__panel">
+              <TestPanel
+                phase={phase}
+                elapsed={elapsed}
+                time1={time1}
+                time2={time2}
+                onStart={handleStart}
+                onContinue={handleContinue}
+                onReset={handleReset}
+              />
+            </div>
+          </div>
+
+          {/* Leaderboard - shown after results */}
+          {isResults && (
+            <>
+              <LeaderboardSubmit
+                time1={time1}
+                time2={time2}
+                onSubmitted={() => setLeaderboardKey(k => k + 1)}
+              />
+              <Leaderboard
+                refreshKey={leaderboardKey}
+                currentImprovement={currentImprovement}
+              />
+            </>
+          )}
+        </>
+      );
+    }
+
+    ReactDOM.createRoot(document.getElementById('root')).render(<App />);
+  </script>
+</body>
+</html>

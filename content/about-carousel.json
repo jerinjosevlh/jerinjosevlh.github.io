@@ -1,0 +1,33 @@
+{
+  "carouselCards": [
+    {
+      "id": "about-design",
+      "dataCard": "about-design",
+      "title": "Hey it's me!  👋",
+      "description": "Glad you're here, nice to see you",
+      "backgroundClass": "about-design",
+      "image": "/assets/images/about-me-1.jpg"
+    },
+    {
+      "id": "about-background",
+      "dataCard": "about-background",
+      "title": "What I'm building  ⚙️",
+      "description": "A distributed key-value store, built from scratch. More soon.",
+      "backgroundClass": "about-background"
+    },
+    {
+      "id": "about-creative",
+      "dataCard": "about-creative",
+      "title": "More photos soon  📸",
+      "description": "This spot is saved for a few more moments.",
+      "backgroundClass": "about-creative"
+    },
+    {
+      "id": "about-personal",
+      "dataCard": "about-personal",
+      "title": "Thanks for stopping by  🌱",
+      "description": "Scroll down and say hi.",
+      "backgroundClass": "about-personal"
+    }
+  ]
+}

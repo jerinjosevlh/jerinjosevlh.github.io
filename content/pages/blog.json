@@ -1,0 +1,23 @@
+{
+  "title": "Blog - Jerimy Brown",
+  "tags": {
+    "description": "Thoughts on design, UX, and the creative process — by Jerimy Brown.",
+    "author": "Jerimy Brown",
+    "og:type": "website",
+    "og:url": "/blog/",
+    "og:title": "Blog - Jerimy Brown",
+    "og:description": "Thoughts on design, UX, and the creative process — by Jerimy Brown.",
+    "og:image": "/assets/images/preview/home-preview.png",
+    "twitter:card": "summary_large_image",
+    "twitter:url": "/blog/",
+    "twitter:title": "Blog - Jerimy Brown",
+    "twitter:description": "Thoughts on design, UX, and the creative process — by Jerimy Brown.",
+    "twitter:image": "/assets/images/preview/home-preview.png"
+  },
+  "jsonLd": [],
+  "canonical": "/blog/",
+  "nav": {
+    "home": false,
+    "active": "Blog"
+  }
+}
