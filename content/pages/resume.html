@@ -19,6 +19,18 @@
             word-spacing: 0.5em;
         }
 
+        /* Round photo between the heading and the name */
+        .resume-photo {
+            display: block;
+            width: 160px;
+            height: 160px;
+            margin: var(--space-8) auto var(--space-4);
+            border-radius: 50%;
+            object-fit: cover;
+            object-position: center 30%;
+            box-shadow: 0 0 0 6px color-mix(in srgb, var(--color-accent) 12%, transparent);
+        }
+
         .header .description .interactive-text {
             color: var(--accent-color);
         }
@@ -223,6 +235,12 @@
                 font-size: 24px;
             }
 
+            .resume-photo {
+                width: 120px;
+                height: 120px;
+                margin-top: var(--space-6);
+            }
+
             .resume-summary {
                 padding: 0;
                 font-size: 16px;
@@ -263,7 +281,8 @@
     <!-- Resume Header -->
     <div class="container">
         <header class="header">
-            <h1 class="title">Resume</h1>
+            <h1 class="title">About Me</h1>
+            <img class="resume-photo" src="/assets/images/about-me-1.jpg" alt="Photo of Jerin Jose" width="160" height="160">
             <p class="subtitle">Jerin Jose</p>
             <p class="description">
                 <a href="/" class="accent-link">Portfolio</a> •
@@ -301,16 +320,6 @@
             <h2 class="resume-section-title">Skills</h2>
             <div class="skills-grid">
                 <!-- Skill categories are dynamically generated from data/skills.json -->
-            </div>
-        </div>
-    </section>
-
-    <!-- Accolades Section -->
-    <section class="resume-section">
-        <div class="container">
-            <h2 class="resume-section-title">Accolades</h2>
-            <div class="accolades-grid">
-                <!-- Accolades (awards and features) are dynamically generated from data/accolades.json -->
             </div>
         </div>
     </section>
