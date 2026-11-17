@@ -26,13 +26,6 @@
   --color-accent: var(--color-accent-cool); /* Default to cool */
   --logo-color: var(--color-neutral-700);
 
-  /* Glass tint for the phone bottom bar: the on-screen colours of the "Hey it's me!"
-     caption glass over the About photo (measured left to right), so the bar matches it */
-  --glass-tint-sage: #9da099;   /* misty sage grey (left) */
-  --glass-tint-olive: #8c8d87;  /* olive grey (centre) */
-  --glass-tint-stone: #a6a397;  /* warm stone (centre right) */
-  --glass-tint-beige: #d5cec2;  /* light warm beige (right) */
-
   /* Text Colors */
   --text-primary: #1a1a1a;
   --text-secondary: #525252;

@@ -530,171 +530,151 @@ body.work-page .logo:hover .logo-letter {
 
 
 /* ==========================================
-   Phone Bottom Bar
-   A floating glass pill in the site's own language: the header's glass, pill shapes
-   like the buttons, text labels like the header links, and the accent-coloured pill
-   from the toggle selector marking the current tab (it slides between tabs).
-   Phones only; it replaces the hamburger menu there.
+   Phone Floating Menu
+   A small round glass button in the bottom-right corner; tapping it pops up the menu
+   links in a glass card above it. Phones only; it replaces the hamburger menu there.
    ========================================== */
-.bottom-nav {
+.fab-nav {
     display: none;
 }
 
 @media (max-width: 768px) {
-    .bottom-nav {
+    .fab-nav {
         position: fixed;
-        left: 50%;
-        bottom: calc(var(--space-3) + env(safe-area-inset-bottom));
+        right: var(--space-4);
+        bottom: calc(var(--space-4) + env(safe-area-inset-bottom));
         z-index: 1200; /* same layer as the header, above the page-fade overlay */
-        transform: translateX(-50%);
         display: flex;
-        width: min(400px, calc(100% - var(--space-6)));
-        padding: var(--space-1);
-        border-radius: var(--radius-full);
-        overflow: hidden; /* clips the glow and gloss layers to the pill */
-        isolation: isolate;
-        /* Clear glass with a solid shape: see-through enough that text and photos
-           visibly blur behind it (the glass effect), while the gloss band (::before),
-           light-to-shadow gradient, crisp edge, top highlight and lifting shadow keep it
-           visible as a glass piece over the near-white page. Making it more opaque hides
-           the blur and the glass effect with it. Keep the blur at 12px: on a bar this
-           short (52px), Chrome silently drops backdrop blur above roughly 12px. */
-        background: linear-gradient(
-            180deg,
-            color-mix(in srgb, var(--color-white) 22%, transparent) 0%,
-            color-mix(in srgb, var(--color-white) 8%, transparent) 55%,
-            color-mix(in srgb, var(--color-white) 18%, transparent) 100%
-        );
+        flex-direction: column;
+        align-items: flex-end;
+        gap: var(--space-3);
+    }
+
+    .fab-nav-toggle {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        gap: 4px;
+        width: 52px;
+        height: 52px;
+        padding: 0;
+        border-radius: 50%;
+        cursor: pointer;
+        -webkit-tap-highlight-color: transparent;
+        background: color-mix(in srgb, var(--color-white) 70%, transparent);
         -webkit-backdrop-filter: blur(12px) saturate(180%);
         backdrop-filter: blur(12px) saturate(180%);
         border: 1px solid color-mix(in srgb, var(--color-neutral-900) 10%, transparent);
         box-shadow:
             inset 0 1px 0 var(--color-white),
-            inset 0 -1px 2px color-mix(in srgb, var(--color-neutral-900) 8%, transparent),
-            0 12px 32px -8px color-mix(in srgb, var(--color-neutral-900) 28%, transparent),
-            0 2px 8px color-mix(in srgb, var(--color-neutral-900) 8%, transparent);
+            0 8px 24px -6px color-mix(in srgb, var(--color-neutral-900) 30%, transparent);
+        transition: transform 0.2s ease;
     }
 
-    /* Colour inside the glass: the on-screen colours of the "Hey it's me!" caption glass
-       over the About photo (sage and olive grey, warm stone, light beige on the right),
-       so the bar looks like that caption glass everywhere, even on the plain white page.
-       It drifts slowly; static for reduced motion. */
-    .bottom-nav::before {
-        content: '';
-        position: absolute;
-        inset: -40%;
-        z-index: -1;
-        background:
-            radial-gradient(ellipse at 30% 40%, color-mix(in srgb, var(--color-white) 18%, transparent) 0%, transparent 30%),
-            radial-gradient(ellipse at 85% 60%, var(--glass-tint-beige) 0%, transparent 32%),
-            linear-gradient(90deg,
-                var(--glass-tint-sage) 30%,
-                var(--glass-tint-olive) 48%,
-                var(--glass-tint-stone) 60%,
-                var(--glass-tint-beige) 72%);
-        filter: blur(14px);
-        opacity: 0.92;
+    .fab-nav-toggle:active {
+        transform: scale(0.94);
+    }
+
+    .fab-nav-bar {
+        display: block;
+        width: 18px;
+        height: 2px;
+        border-radius: 2px;
+        background: var(--text-primary);
+        transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.2s ease;
+    }
+
+    /* Open: the three bars turn into an X */
+    .fab-nav.open .fab-nav-bar:nth-child(1) {
+        transform: translateY(6px) rotate(45deg);
+    }
+
+    .fab-nav.open .fab-nav-bar:nth-child(2) {
+        opacity: 0;
+    }
+
+    .fab-nav.open .fab-nav-bar:nth-child(3) {
+        transform: translateY(-6px) rotate(-45deg);
+    }
+
+    .fab-nav-menu {
+        display: flex;
+        flex-direction: column;
+        min-width: 160px;
+        padding: var(--space-2);
+        border-radius: var(--radius-lg);
+        background: color-mix(in srgb, var(--color-white) 80%, transparent);
+        -webkit-backdrop-filter: blur(12px) saturate(180%);
+        backdrop-filter: blur(12px) saturate(180%);
+        border: 1px solid color-mix(in srgb, var(--color-neutral-900) 10%, transparent);
+        box-shadow:
+            inset 0 1px 0 var(--color-white),
+            0 12px 32px -8px color-mix(in srgb, var(--color-neutral-900) 30%, transparent);
+        transform-origin: bottom right;
+        opacity: 0;
+        transform: translateY(8px) scale(0.96);
+        visibility: hidden;
         pointer-events: none;
-        animation: bottom-nav-glow 14s ease-in-out infinite alternate;
+        transition: opacity 0.2s ease, transform 0.2s ease, visibility 0.2s;
     }
 
-    @keyframes bottom-nav-glow {
-        from { transform: translateX(-6%); }
-        to { transform: translateX(6%); }
+    .fab-nav.open .fab-nav-menu {
+        opacity: 1;
+        transform: none;
+        visibility: visible;
+        pointer-events: auto;
     }
 
-    /* Gloss: a soft light reflection across the top half, like polished glass */
-    .bottom-nav::after {
-        content: '';
-        position: absolute;
-        inset: 1px 1px 50% 1px;
-        z-index: 0;
-        border-radius: var(--radius-full) var(--radius-full) var(--space-6) var(--space-6);
-        background: linear-gradient(
-            180deg,
-            color-mix(in srgb, var(--color-white) 85%, transparent) 0%,
-            color-mix(in srgb, var(--color-white) 0%, transparent) 100%
-        );
-        pointer-events: none;
-    }
-
-    .bottom-nav a {
-        position: relative;
-        z-index: 2;
-        flex: 1;
+    .fab-nav-menu a {
         display: flex;
         align-items: center;
-        justify-content: center;
         min-height: 44px;
-        border-radius: var(--radius-full);
+        padding: 0 var(--space-4);
+        border-radius: var(--radius-md);
         color: var(--text-primary);
-        font-size: 13px;
+        font-size: 16px;
         font-weight: 500;
         text-decoration: none;
         -webkit-tap-highlight-color: transparent;
-        transition: color 0.3s ease, opacity 0.2s ease;
     }
 
-    .bottom-nav a:active {
-        opacity: 0.6;
+    .fab-nav-menu a:active {
+        background: color-mix(in srgb, var(--color-neutral-900) 6%, transparent);
     }
 
-    /* Active tab: no accent colour, just darker, bolder text on a frosted capsule */
-    .bottom-nav a.active {
-        color: var(--text-primary);
+    .fab-nav-menu a.active {
+        color: var(--color-accent);
         font-weight: 600;
     }
 
-    /* A smaller frosted white glass capsule marks the current tab; navigation.js moves it */
-    .bottom-nav-pill {
-        position: absolute;
-        z-index: 1;
-        top: var(--space-1);
-        bottom: var(--space-1);
-        left: 0;
-        width: 0;
-        border: 1px solid color-mix(in srgb, var(--color-white) 80%, transparent);
-        border-radius: var(--radius-full);
-        background: linear-gradient(
-            180deg,
-            color-mix(in srgb, var(--color-white) 85%, transparent) 0%,
-            color-mix(in srgb, var(--color-white) 55%, transparent) 100%
-        );
-        box-shadow:
-            inset 0 1px 0 var(--color-white),
-            0 2px 6px color-mix(in srgb, var(--color-neutral-900) 12%, transparent);
-        opacity: 0;
-        pointer-events: none;
-        transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1), width 0.3s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.2s ease;
-    }
-
-    .bottom-nav-pill.no-transition {
-        transition: none;
-    }
-
     @media (prefers-reduced-motion: reduce) {
-        .bottom-nav::before {
-            animation: none;
+        .fab-nav-menu,
+        .fab-nav-bar {
+            transition: none;
         }
     }
 
-    /* The bottom bar covers every link, so the hamburger menu isn't needed on phones */
+    /* The floating menu covers every link, so the hamburger menu isn't needed on phones */
     .nav-mobile-toggle,
     .mobile-menu-overlay {
         display: none !important;
     }
 
-    /* Keep page content and floating buttons clear of the bar (52px tall + 12px gap) */
+    /* Keep page content clear of the button (52px + 16px gap) */
     body {
-        padding-bottom: calc(76px + env(safe-area-inset-bottom));
+        padding-bottom: calc(84px + env(safe-area-inset-bottom));
     }
 
-    /* "body" outranks the base rules in _hero.css, which loads after this file */
+    /* Back-to-top / back-to-projects stack above the menu button.
+       "body" outranks the base rules in _hero.css, which loads after this file */
     body .back-to-top {
-        bottom: calc(80px + env(safe-area-inset-bottom));
+        right: var(--space-4);
+        bottom: calc(84px + env(safe-area-inset-bottom));
     }
 
     body .back-to-projects {
-        bottom: calc(140px + env(safe-area-inset-bottom));
+        right: var(--space-4);
+        bottom: calc(144px + env(safe-area-inset-bottom));
     }
 }

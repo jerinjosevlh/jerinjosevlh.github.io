@@ -75,7 +75,7 @@ function initNavigationActiveState() {
         return;
     }
 
-    const navLinks = document.querySelectorAll('.nav-links a, .mobile-nav a, .bottom-nav a');
+    const navLinks = document.querySelectorAll('.nav-links a, .mobile-nav a, .fab-nav-menu a');
 
     function updateActiveNavigation() {
         let currentSection = '';
@@ -99,7 +99,7 @@ function initNavigationActiveState() {
 
         // At the very top, a Home link ("#") wins if the menu has one; otherwise the first
         // section (About) is highlighted by the normal rule below
-        const homeLinks = document.querySelectorAll('.nav-links a[href="#"], .mobile-nav a[href="#"], .bottom-nav a[href="#"]');
+        const homeLinks = document.querySelectorAll('.nav-links a[href="#"], .mobile-nav a[href="#"], .fab-nav-menu a[href="#"]');
         if (window.scrollY <= 50 && homeLinks.length) {
             homeLinks.forEach(link => {
                 link.classList.add('active');
@@ -209,35 +209,36 @@ function initBackToTop() {
 }
 
 
-// Phone Bottom Bar: sliding accent-coloured pill
+// Phone Floating Menu
 // ==========================================
-// Moves the outlined pill (.bottom-nav-pill) under the active tab. The active class is
-// set by the server (Blog/Resume pages) or by initNavigationActiveState() while scrolling.
+// The round button in the bottom-right corner opens and closes the menu card above it.
+// It closes again on a link tap, a tap anywhere else, or Escape.
 
-function initBottomNavPill() {
-    const nav = document.querySelector('.bottom-nav');
-    const pill = nav && nav.querySelector('.bottom-nav-pill');
-    if (!pill) return;
+function initFabNav() {
+    const fab = document.getElementById('fabNav');
+    const toggle = fab && fab.querySelector('.fab-nav-toggle');
+    if (!toggle) return;
 
-    function place() {
-        const active = nav.querySelector('a.active');
-        if (!active || !active.offsetWidth) {
-            pill.style.opacity = '0';
-            return;
-        }
-        pill.style.width = `${active.offsetWidth}px`;
-        pill.style.transform = `translateX(${active.offsetLeft}px)`;
-        pill.style.opacity = '1';
+    function setOpen(open) {
+        fab.classList.toggle('open', open);
+        toggle.setAttribute('aria-expanded', String(open));
+        toggle.setAttribute('aria-label', open ? 'Close menu' : 'Open menu');
     }
 
-    // First placement without the slide, so it doesn't fly in from the left on load
-    pill.classList.add('no-transition');
-    place();
-    void pill.offsetWidth;
-    pill.classList.remove('no-transition');
-
-    new MutationObserver(place).observe(nav, { subtree: true, attributes: true, attributeFilter: ['class'] });
-    window.addEventListener('resize', place);
+    toggle.addEventListener('click', event => {
+        event.stopPropagation();
+        setOpen(!fab.classList.contains('open'));
+    });
+    fab.querySelectorAll('.fab-nav-menu a').forEach(link => link.addEventListener('click', () => setOpen(false)));
+    document.addEventListener('click', event => {
+        if (!fab.contains(event.target)) setOpen(false);
+    });
+    document.addEventListener('keydown', event => {
+        if (event.key === 'Escape' && fab.classList.contains('open')) {
+            setOpen(false);
+            toggle.focus();
+        }
+    });
 }
 
-document.addEventListener('DOMContentLoaded', initBottomNavPill);
+document.addEventListener('DOMContentLoaded', initFabNav);

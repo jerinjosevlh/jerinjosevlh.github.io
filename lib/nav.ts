@@ -2,14 +2,12 @@ const SITE_NAME = 'Jerin Jose';
 
 // One list for the desktop menu and the phone bottom bar, in the order a visitor reads the
 // site: who you are, what you built, your experience, how you think, then get in touch.
-// The home page is the résumé: About, Work, Resume (Experience) and Contact are its
-// sections; only Blog is a separate page. The logo also links home.
+// The home page is the résumé; the menu keeps just About, Work and Blog (Experience,
+// Skills and Contact are reached by scrolling). The logo also links home.
 const LINKS = [
     { label: 'About', section: 'about' },
     { label: 'Work', section: 'projects' },
-    { label: 'Resume', section: 'resume' },
     { label: 'Blog', route: '/blog/' },
-    { label: 'Contact', section: 'contact' },
     // Hidden for now (the page still exists at /lab/); uncomment to show it again
     // { label: 'Lab', route: '/lab/' },
 ];
@@ -74,8 +72,14 @@ export function renderNav({ home, active }: { home: boolean; active: string | nu
         </div>
     </div>
 
-    <nav class="bottom-nav" aria-label="Quick navigation">
-        <span class="bottom-nav-pill" aria-hidden="true"></span>
-        ${bottomLinks}
-    </nav>`;
+    <div class="fab-nav" id="fabNav">
+        <nav class="fab-nav-menu" id="fabNavMenu" aria-label="Quick navigation">
+            ${bottomLinks}
+        </nav>
+        <button class="fab-nav-toggle" type="button" aria-label="Open menu" aria-expanded="false" aria-controls="fabNavMenu">
+            <span class="fab-nav-bar"></span>
+            <span class="fab-nav-bar"></span>
+            <span class="fab-nav-bar"></span>
+        </button>
+    </div>`;
 }
