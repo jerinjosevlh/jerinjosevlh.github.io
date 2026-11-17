@@ -2,11 +2,12 @@ const SITE_NAME = 'Jerin Jose';
 
 // One list for the desktop menu and the phone bottom bar, in the order a visitor reads the
 // site: who you are, what you built, your experience, how you think, then get in touch.
-// About is the top of the home page, so it doubles as "Home"; the logo also links home.
+// The home page is the résumé: About, Work, Resume (Experience) and Contact are its
+// sections; only Blog is a separate page. The logo also links home.
 const LINKS = [
     { label: 'About', section: 'about' },
     { label: 'Work', section: 'projects' },
-    { label: 'Resume', route: '/resume/' },
+    { label: 'Resume', section: 'resume' },
     { label: 'Blog', route: '/blog/' },
     { label: 'Contact', section: 'contact' },
     // Hidden for now (the page still exists at /lab/); uncomment to show it again
