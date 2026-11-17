@@ -23,9 +23,9 @@
            links beside it */
         .intro-row {
             display: grid;
-            /* Photo and text sized to their content and grouped in the centre */
+            /* Photo and text sized to their content, starting at the left edge like the headings below */
             grid-template-columns: minmax(0, 380px) minmax(0, max-content);
-            justify-content: center;
+            justify-content: start;
             gap: var(--space-12);
             align-items: center;
             margin-top: 0;
@@ -262,9 +262,9 @@
 
             /* Phones too: photo on the left, name and links beside it */
             .intro-row {
-                /* Sized to their content and centred as one group */
+                /* Sized to their content, starting at the left edge like the headings below */
                 grid-template-columns: minmax(96px, 150px) max-content;
-                justify-content: center;
+                justify-content: start;
                 gap: var(--space-4);
                 margin-top: 0;
                 text-align: left;
