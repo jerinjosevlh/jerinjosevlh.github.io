@@ -163,6 +163,12 @@
   --container-padding-mobile: 24px;
   --logo-text-offset: 20px; /* Centered in desktop gutter */
   --nav-height: 80px;
+
+  /* Page rhythm (fluid, phone -> desktop). Each section is padded by --section-space
+     top and bottom, so neighbouring sections sit 2x apart (about 56px -> 96px).
+     --heading-space separates a section heading from its content (16px -> 28px). */
+  --section-space: clamp(28px, 1.6vw + 22px, 48px);
+  --heading-space: clamp(16px, 0.8vw + 12px, 28px);
   --scroll-offset: 48px; /* Sections appear closer to nav when scrolled to */
   --content-scroll-offset: calc(var(--nav-height) + var(--space-10)); /* 120px — clears fixed nav; matches .content-sidebar sticky top */
 

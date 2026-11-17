@@ -38,3 +38,46 @@ body {
     background: color-mix(in srgb, var(--color-accent-cool) 30%, transparent);
     color: var(--color-accent-cool);
 }
+
+
+/* ==========================================
+   Accessibility
+   ========================================== */
+
+/* Clear keyboard focus everywhere (mouse clicks don't show it) */
+:focus-visible {
+    outline: 2px solid var(--color-accent);
+    outline-offset: 3px;
+    border-radius: 4px;
+}
+
+/* "Skip to content": hidden until a keyboard user tabs to it */
+.skip-link {
+    position: fixed;
+    top: var(--space-2);
+    left: var(--space-2);
+    z-index: 2000;
+    padding: var(--space-2) var(--space-4);
+    border-radius: var(--radius-sm);
+    background: var(--text-primary);
+    color: var(--color-white);
+    font-weight: 600;
+    text-decoration: none;
+    transform: translateY(-200%);
+    transition: transform 0.2s ease;
+}
+
+.skip-link:focus {
+    transform: none;
+}
+
+/* Jumping to a section (menu, skip link) leaves room for the fixed header */
+[id] {
+    scroll-margin-top: 88px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    html {
+        scroll-behavior: auto !important;
+    }
+}

@@ -91,10 +91,10 @@ function initSkillsGrid() {
                 return `<span class="skill-level">${level}:</span> ${skillsList}`;
             }).join('<br>\n                        ');
         } else if (category.skills) {
-            // Regular skills list
-            skillsHTML = category.skills.join(' / ');
+            // One skill per line, so the list is easy to scan
+            skillsHTML = `<ul class="skill-tags">${category.skills.map(skill => `<li>${skill}</li>`).join('')}</ul>`;
             if (category.description) {
-                skillsHTML += `<br><br>\n                        ${category.description}`;
+                skillsHTML += `<p class="skill-note">${category.description}</p>`;
             }
         }
 

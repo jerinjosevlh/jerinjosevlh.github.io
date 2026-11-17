@@ -1,0 +1,102 @@
+/* Accent colour switcher (development only, see palette-switcher.js) */
+.dev-palette {
+    position: fixed;
+    left: 16px;
+    bottom: calc(16px + env(safe-area-inset-bottom));
+    z-index: 1300;
+    font-family: var(--font-family-primary);
+}
+
+.dev-palette-toggle {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    min-height: 44px;
+    padding: 0 16px;
+    border-radius: var(--radius-full);
+    border: 1px solid var(--color-neutral-300);
+    background: var(--color-white);
+    color: var(--text-primary);
+    font: inherit;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    box-shadow: var(--shadow-sm);
+}
+
+.dev-palette-dot {
+    width: 14px;
+    height: 14px;
+    border-radius: 50%;
+    background: var(--color-accent);
+}
+
+.dev-palette-menu {
+    position: absolute;
+    left: 0;
+    bottom: calc(100% + 8px);
+    width: 220px;
+    padding: 8px;
+    border-radius: var(--radius-lg);
+    border: 1px solid var(--color-neutral-200);
+    background: var(--color-white);
+    box-shadow: var(--shadow-md);
+}
+
+.dev-palette-menu[hidden] {
+    display: none;
+}
+
+.dev-palette-note {
+    margin: 4px 8px 8px;
+    font-size: 12px;
+    color: var(--text-secondary);
+}
+
+.dev-palette-option {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    width: 100%;
+    min-height: 40px;
+    padding: 0 8px;
+    border: none;
+    border-radius: var(--radius-sm);
+    background: none;
+    color: var(--text-primary);
+    font: inherit;
+    font-size: 14px;
+    text-align: left;
+    cursor: pointer;
+}
+
+.dev-palette-option:hover {
+    background: var(--color-neutral-100);
+}
+
+.dev-palette-option[aria-checked="true"] {
+    background: var(--color-neutral-100);
+    font-weight: 600;
+}
+
+.dev-palette-swatch {
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    flex: none;
+}
+
+.dev-palette-name {
+    flex: 1;
+}
+
+.dev-palette-ratio {
+    font-size: 12px;
+    color: var(--text-secondary);
+}
+
+/* Below the 4.5:1 readability guideline for small text */
+.dev-palette-ratio.is-low {
+    color: #b91c1c;
+    font-weight: 600;
+}

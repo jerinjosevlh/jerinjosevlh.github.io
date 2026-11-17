@@ -57,3 +57,6 @@ content/generated/
 
 # Local-only admin uploads (production uploads go to Vercel Blob)
 /public/uploads/
+
+# Original full-size headshot (the site uses public/assets/images/headshot.jpg)
+/linkedin_professional_headshot_1536x1536.png

@@ -179,6 +179,13 @@ This is a software engineer portfolio, so the accent is green: the colour of ter
 - Width: 100% (liquid until max-width)
 - Padding: 120px 60px (desktop), 80px 24px (mobile)
 
+**Page rhythm (use these, not fixed pixel paddings):**
+- `--section-space` (`clamp(28px, 1.6vw + 22px, 48px)`): top and bottom padding of every home page section, so neighbouring sections sit 2x apart (about 56px on phones, 96px on desktop)
+- `--heading-space` (`clamp(16px, 0.8vw + 12px, 28px)`): gap between a section heading and its content
+- Related items: 12–24px; inside an item (title to text): 4–8px. The last item in a list adds no space below its section
+- Phones (≤768px): project cards are small squares two per row; experience entries are two lines (title + dates, company · city); skills are 2 columns on tablets
+- The rules live at the end of the `<style>` block in `content/pages/index.html` (home page only). Measure gaps at 375, 390, 768, 1024 and 1440px wide after changing them
+
 **Modular Spacing Scale:**
 - xs: 4px, sm: 8px, md: 16px, lg: 24px, xl: 48px, xxl: 80px
 
@@ -373,6 +380,16 @@ body::after {
 - Test glass effects on various backgrounds
 - Ensure sufficient color contrast in both themes
 - Use `prefers-reduced-motion` for accessibility
+
+**Accessibility (keep the home page and blog at zero axe violations):**
+- Every page has a "Skip to content" link (`lib/nav.ts`) targeting `#main-content` (the home page `<main>`, the blog `<main>`, the case study `.content-main`); new pages need that id
+- Each `<nav>` has a distinct `aria-label` (Main, Mobile, Quick navigation, Contents)
+- Icon-only buttons and links need an `aria-label` (back to top, back to projects/blog, slide dots)
+- Keep heading levels in order (h1, then h2): the page title is the only h1; blog cards and the case study "Contents" title are h2
+- Tap targets at least 24px (44px for primary controls); body text at least 15px on phones
+- Small grey text uses `--text-secondary`, not `--text-tertiary`, on light grey backgrounds (contrast)
+- `:focus-visible` shows an accent outline everywhere (`_base.css`); never remove outlines without a replacement
+- Check with axe-core in a headless browser at phone and desktop sizes
 
 ## Next.js Architecture
 

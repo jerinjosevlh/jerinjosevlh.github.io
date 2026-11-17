@@ -42,6 +42,13 @@ export default function RootLayout({ children }: { children: ReactNode }) {
                 <noscript>
                     <style>{'body { opacity: 1 !important; } body::after { display: none; }'}</style>
                 </noscript>
+                {/* Accent colour switcher: only while developing (npm run dev), never in the built site */}
+                {process.env.NODE_ENV === 'development' && (
+                    <>
+                        <link rel="stylesheet" href="/assets/js/dev/palette-switcher.css" />
+                        <script src="/assets/js/dev/palette-switcher.js" />
+                    </>
+                )}
             </head>
             {/* The inline theme script and page scripts set attributes on body before hydration. */}
             <body suppressHydrationWarning>{children}</body>

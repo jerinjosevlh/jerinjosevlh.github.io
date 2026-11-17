@@ -149,7 +149,7 @@
         }
 
         .experience-compact-grid {
-            margin-top: 64px;
+            margin-top: var(--space-10);
         }
 
         .experience-compact {
@@ -167,27 +167,57 @@
 
         .skills-grid {
             display: grid;
-            grid-template-columns: repeat(4, 1fr);
-            gap: 32px;
+            /* 3 columns on desktop (6 groups = 2 even rows); 2 on tablets and phones */
+            grid-template-columns: repeat(3, minmax(0, 1fr));
+            gap: 40px 48px;
         }
 
         .skill-category {
             padding: 0;
         }
 
+        /* Group title: small, bold, accent-coloured label */
         .skill-category-title {
-            font-size: 16px;
-            font-weight: 400;
-            color: var(--primary-color);
-            margin-bottom: 24px;
-            text-transform: none;
-            letter-spacing: 0;
+            font-size: 13px;
+            font-weight: 600;
+            color: var(--color-accent);
+            margin-bottom: 12px;
+            text-transform: uppercase;
+            letter-spacing: 0.06em;
         }
 
         .skill-list {
             font-size: 16px;
             line-height: 1.8;
             color: var(--secondary-color);
+        }
+
+        /* One skill per line, plain text */
+        .skill-tags {
+            margin: 0;
+            padding: 0;
+            list-style: none;
+        }
+
+        .skill-tags li {
+            color: var(--text-primary);
+            font-size: 16px;
+            line-height: 1.45;
+        }
+
+        @media (max-width: 768px) {
+            .skill-tags li {
+                font-size: 15px;
+            }
+        }
+
+        .skill-tags li + li {
+            margin-top: 6px;
+        }
+
+        .skill-note {
+            margin-top: 12px;
+            font-size: 14px;
         }
 
         .skill-level {
@@ -253,7 +283,7 @@
         @media (max-width: 768px) {
             /* Ensure mobile body font for description paragraphs (not subtitle) */
             .header p:not(.subtitle) {
-                font-size: 12px;
+                font-size: 15px; /* 12px was too small to read comfortably */
             }
 
             .resume-section-title {
@@ -339,17 +369,71 @@
                 padding: 0;
             }
 
+            /* Each job in two short lines: title + dates, then company · city
+               (instead of four stacked lines) */
             .experience-header {
-                flex-direction: column;
+                display: grid;
+                grid-template-columns: minmax(0, 1fr) auto;
+                grid-template-areas:
+                    "title dates"
+                    "company location";
+                align-items: baseline;
+                gap: 2px var(--space-3);
+                margin-bottom: 0;
+            }
+
+            .experience-title {
+                grid-area: title;
+                font-weight: 500;
+            }
+
+            .experience-dates {
+                grid-area: dates;
+                width: auto;
+                font-size: 13px;
+                font-weight: 600;
+                letter-spacing: 0.02em;
+                white-space: nowrap;
+                text-align: right;
+            }
+
+            .experience-company {
+                grid-area: company;
+                width: auto;
+                font-size: 15px;
+            }
+
+            .experience-location {
+                grid-area: location;
+                width: auto;
+                font-size: 13px;
+                text-align: right;
+                white-space: nowrap;
+            }
+
+            .experience-description {
+                margin-top: var(--space-2);
+                font-size: 15px;
+            }
+
+            .experience-item.experience-detailed {
+                margin-bottom: var(--space-6);
             }
 
             .experience-compact-grid {
                 grid-template-columns: 1fr;
-                gap: 32px;
+                gap: 0;
+                margin-top: var(--space-8);
             }
 
+            .experience-compact {
+                margin-bottom: var(--space-4);
+            }
+
+            /* Two groups side by side on phones too */
             .skills-grid {
-                grid-template-columns: 1fr;
+                grid-template-columns: repeat(2, minmax(0, 1fr));
+                gap: var(--space-6) var(--space-4);
             }
 
             .accolades-grid {
@@ -360,9 +444,78 @@
                 padding: 0;
             }
         }
+
+        /* ---------- Spacing system for the home page ----------
+           One rhythm everywhere: sections --section-space apart (doubled between
+           neighbours), headings --heading-space above their content. Replaces the mix
+           of 48 / 64 / 120px section paddings, 48px heading gaps and the tall empty
+           space after Contact. */
+        .resume-intro .header {
+            padding: calc(76px + var(--section-space)) 0 var(--section-space);
+        }
+
+        .resume-intro ~ .resume-section,
+        .resume-intro ~ .projects {
+            padding: var(--section-space) 0;
+        }
+
+        .resume-intro ~ .resume-section .resume-section-title,
+        .resume-intro ~ .projects .resume-section-title {
+            margin-bottom: var(--heading-space);
+        }
+
+        .resume-intro ~ .contact {
+            min-height: 0;
+            padding: var(--section-space) 0 calc(var(--section-space) * 2);
+        }
+
+        .resume-intro ~ .contact .section-title {
+            margin-bottom: var(--space-2);
+        }
+
+        .resume-intro ~ .contact .contact-buttons {
+            margin-top: var(--heading-space);
+        }
+
+        /* The last item in a list shouldn't add space below its section */
+        .resume-intro ~ .resume-section .experience-item:last-child {
+            margin-bottom: 0;
+        }
+
+        /* Skills: 2 columns on tablets */
+        @media (min-width: 481px) and (max-width: 768px) {
+            .skills-grid {
+                grid-template-columns: repeat(2, minmax(0, 1fr));
+                gap: var(--space-6);
+            }
+        }
+
+        @media (min-width: 769px) and (max-width: 900px) {
+            .skills-grid {
+                grid-template-columns: repeat(2, minmax(0, 1fr));
+                gap: var(--space-8);
+            }
+        }
+
+        #main-content ~ .bottom-spacing {
+            display: none;
+        }
+
+        @media (max-width: 768px) {
+            .resume-intro .header {
+                padding-top: calc(64px + var(--section-space));
+            }
+        }
+
+        /* Bigger tap targets for the contact links beside the photo (at least 24px) */
+        .intro-text .description a {
+            display: inline-block;
+            padding-block: 4px;
+        }
     </style>
     {{NAV}}
 
+    <main id="main-content">
     <!-- About: heading, photo card, name, links -->
     <section class="resume-intro" id="about">
     <div class="container">
@@ -448,12 +601,13 @@
             </div>
         </div>
     </section>
+    </main>
 
     <!-- Bottom Spacing -->
     <div class="bottom-spacing"></div>
 
     <!-- Back to Top Button -->
-    <button class="btn-arrow btn-arrow-md btn-arrow-filled back-to-top" onclick="scrollToTop()">
+    <button class="btn-arrow btn-arrow-md btn-arrow-filled back-to-top" onclick="scrollToTop()" aria-label="Back to top">
         <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
             <path d="M12 18L12 6M8 10L12 6L16 10" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
         </svg>

@@ -43,7 +43,9 @@ export function renderNav({ home, active }: { home: boolean; active: string | nu
 
     const logoAttrs = home ? 'href="#" class="logo" onclick="scrollToTop(); return false;"' : 'href="/" class="logo"';
 
-    return `<nav class="nav">
+    return `<a class="skip-link" href="#main-content">Skip to content</a>
+
+    <nav class="nav" aria-label="Main">
         <div class="nav-container">
             <a ${logoAttrs}>
                 <div class="logo-container">
@@ -66,7 +68,7 @@ export function renderNav({ home, active }: { home: boolean; active: string | nu
 
     <div class="mobile-menu-overlay" id="mobileMenuOverlay">
         <div class="mobile-menu-content">
-            <nav class="mobile-nav">
+            <nav class="mobile-nav" aria-label="Mobile">
                 ${mobileLinks}
             </nav>
         </div>

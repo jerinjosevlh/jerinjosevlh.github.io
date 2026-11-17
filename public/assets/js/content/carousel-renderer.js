@@ -85,6 +85,7 @@ function initAboutCarouselIndicators() {
         const button = document.createElement('button');
         button.className = `indicator${index === 0 ? ' active' : ''}`;
         button.setAttribute('data-slide', index);
+        button.setAttribute('aria-label', `Show photo ${index + 1}`);
         button.onclick = function() { goToSlide(index, true); };
         indicatorsContainer.appendChild(button);
     });

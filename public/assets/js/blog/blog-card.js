@@ -54,7 +54,7 @@ export function createBlogCard(post) {
         ${imageHTML}
         <div class="blog-card__content">
             ${renderTags(post.tags, 'blog-card__tags')}
-            <h3 class="blog-card__title">${post.title}</h3>
+            <h2 class="blog-card__title">${post.title}</h2>
             <p class="blog-card__excerpt">${post.excerpt}</p>
             <time class="blog-card__date" datetime="${post.datePublished}">${formatDate(post.datePublished)}</time>
         </div>
