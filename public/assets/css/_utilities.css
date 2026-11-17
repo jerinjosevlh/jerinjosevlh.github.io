@@ -409,10 +409,9 @@
         display: none;
     }
 
-    /* The whole card is the link, so the "View Case Study" line is dropped to leave
-       room for the picture */
     .projects .project-card-featured .project-link-text {
-        display: none;
+        margin-top: var(--space-1);
+        font-size: 12px;
     }
 
     /* Contact buttons: centred rows instead of one oversized button per line */
