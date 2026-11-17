@@ -5,6 +5,9 @@ const nextConfig: NextConfig = {
     // Trailing slashes emit work/x/index.html, which any static host can serve.
     output: 'export',
     trailingSlash: true,
+    experimental: {
+        agentUpgrade: 'security',
+    },
 };
 
 export default nextConfig;
