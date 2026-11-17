@@ -26,6 +26,8 @@ function goToSlide(slideIndex, userTriggered = false) {
             track.style.transition = 'transform 0.5s cubic-bezier(0.4, 0, 0.2, 1)';
         }
         track.setAttribute('data-position', slideIndex);
+        // Works for any number of cards (the CSS data-position steps assume 4)
+        track.style.transform = `translateX(-${(slideIndex * 100) / Math.max(totalSlides, 1)}%)`;
     }
 
     // Update indicators
@@ -63,6 +65,9 @@ function nextSlide() {
 function initCarousel() {
     // Set initial position
     goToSlide(0);
+
+    // A single photo doesn't scroll: no dragging and no auto-rotation
+    if (totalSlides <= 1) return;
 
     // Initialize drag functionality for about carousel
     const aboutCarouselContainer = document.querySelector('.carousel-container');

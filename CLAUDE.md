@@ -392,7 +392,7 @@ The site is a Next.js App Router project exported as static HTML (`output: 'expo
 | Home page = the résumé: About Me heading, photo card, name, Summary, Selected Work, Experience, Skills, Contact | `content/pages/index.html` (the summary text is in the HTML) | The old `/resume/` page is gone; `public/resume/index.html` redirects old links to `/#resume` |
 | Experience and skills | `public/data/experience.json`, `public/data/skills.json` | `resume-renderer.js` fills `.experience-timeline` and `.skills-grid` |
 | Old About text and hero text (no longer shown) | `content/site.json` | `{{SITE_*}}` tokens in `lib/site.ts`, unused by the current home page |
-| About photo cards | `content/about-carousel.json` | `app/(site)/data/about-carousel.json/route.ts` → `out/data/about-carousel.json` |
+| About photo cards | `content/about-carousel.json` (currently one card: the photo) | `app/(site)/data/about-carousel.json/route.ts` → `out/data/about-carousel.json`. With one card there are no dots, swiping or rotation (`.about-carousel.is-single`); add more cards to the file and the carousel comes back automatically, sized to the card count |
 | Project cards | `content/legacy-projects.json` (case study pages in `content/pages/work/`) | `app/(site)/data/projects.json/route.ts` → `out/data/projects.json` |
 | Blog posts | `public/assets/content/blog/<slug>/post.json` | `build/build-blog.js` generates `content/pages/blog/*` and `content/generated/` (git-ignored); `app/(site)/assets/js/blog/blog-data.js/route.ts` serves the module the blog scripts import |
 | Person data (structured data) | `public/data/person.json` | `helpers.js` `generatePersonSchema()`; only public facts, empty fields are dropped. Never put private contact details here |

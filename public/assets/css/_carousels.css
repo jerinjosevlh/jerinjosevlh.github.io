@@ -82,6 +82,11 @@
 }
 
 /* Carousel Indicators */
+/* One photo only: no dots */
+.about-carousel.is-single .carousel-indicators {
+    display: none;
+}
+
 .carousel-indicators {
     display: flex;
     justify-content: center;

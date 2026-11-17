@@ -254,20 +254,64 @@
                 font-size: 24px;
             }
 
-            .intro-row .about-carousel {
-                width: min(320px, 100%);
-                margin: 0 auto;
-            }
-
-            .intro-row .about-card {
-                min-height: 300px;
-            }
-
+            /* Phones too: photo on the left, name and links beside it */
             .intro-row {
-                grid-template-columns: minmax(0, 1fr);
-                gap: var(--space-6);
+                /* Sized to their content and centred as one group */
+                grid-template-columns: minmax(96px, 150px) max-content;
+                justify-content: center;
+                gap: var(--space-4);
                 margin-top: var(--space-6);
-                text-align: center;
+                text-align: left;
+            }
+
+            /* Square photo on phones */
+            .intro-row .about-card {
+                min-height: 0;
+                aspect-ratio: 1 / 1;
+            }
+
+            /* Smaller caption and dots to fit the narrower card */
+            /* Same compact caption on hover/tap (the desktop hover enlarges it) */
+            .intro-row .about-card .project-content-overlay,
+            .intro-row .carousel-container:hover .about-card .project-content-overlay {
+                height: auto;
+                min-height: 0;
+                justify-content: center;
+                padding: var(--space-2) var(--space-3);
+            }
+
+            .intro-row .carousel-container:hover .about-card .project-description {
+                opacity: 0;
+                max-height: 0;
+                margin: 0;
+            }
+
+            .intro-row .about-card .project-title {
+                margin: 0;
+            }
+
+            .intro-row .about-card .project-title {
+                font-size: 13px;
+            }
+
+            .intro-row .carousel-indicators {
+                gap: 0;
+                margin-top: var(--space-1);
+            }
+
+            /* 4 x 36px tap targets fit the narrow column (dots stay 8px) */
+            .intro-row .indicator {
+                width: 36px;
+                height: 36px;
+            }
+
+            .intro-text .subtitle {
+                font-size: 22px;
+            }
+
+            .intro-text .description {
+                word-spacing: normal;
+                white-space: nowrap; /* keep the email on one line */
             }
 
             .resume-summary {

@@ -52,6 +52,17 @@ function initAboutCarousel() {
         carouselTrack.appendChild(article);
     });
 
+    // Size the track to the number of cards (CSS defaults assume 4)
+    carouselTrack.style.width = `${cards.length * 100}%`;
+    carouselTrack.querySelectorAll('.about-card').forEach(card => {
+        card.style.width = `${100 / cards.length}%`;
+    });
+
+    // One photo: no dots, no swiping, no rotation. Add photos to
+    // content/about-carousel.json and the carousel comes back automatically.
+    const carousel = carouselTrack.closest('.about-carousel');
+    if (carousel) carousel.classList.toggle('is-single', cards.length <= 1);
+
     // Update totalSlides to match loaded data
     totalSlides = cards.length;
 }
@@ -65,9 +76,9 @@ function initAboutCarouselIndicators() {
     // Clear existing indicators
     indicatorsContainer.innerHTML = '';
 
-    // Get carousel cards from dataLoader
+    // Get carousel cards from dataLoader (no dots for a single photo)
     const cards = dataLoader.getAboutCarousel();
-    if (cards.length === 0) return;
+    if (cards.length <= 1) return;
 
     // Generate indicators
     cards.forEach((card, index) => {
