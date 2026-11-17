@@ -365,7 +365,7 @@
 /* ==========================================
    Phone sizing for the home page
    Desktop spacing (120px sections) made phones scroll a long way between sections.
-   Tighter spacing here; cards keep their full 400px size. Desktop is unchanged.
+   Tighter spacing and small square project cards here. Desktop is unchanged.
    ========================================== */
 @media (max-width: 768px) {
     .about,
@@ -380,6 +380,39 @@
 
     .section-title {
         margin-bottom: var(--space-8);
+    }
+
+    /* Project cards: small squares, two per row (the desktop size is too big here) */
+    .projects .projects-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: var(--space-3);
+    }
+
+    .projects .project-card-featured {
+        min-height: 0;
+        aspect-ratio: 1 / 1;
+    }
+
+    .projects .project-content-overlay,
+    .projects .project-card-link:hover .project-content-overlay {
+        min-height: 0;
+        padding: var(--space-3);
+    }
+
+    .projects .project-card-featured .project-title {
+        margin: 0;
+        font-size: 14px;
+        line-height: 1.3;
+    }
+
+    .projects .project-card-featured .project-description {
+        display: none;
+    }
+
+    /* The whole card is the link, so the "View Case Study" line is dropped to leave
+       room for the picture */
+    .projects .project-card-featured .project-link-text {
+        display: none;
     }
 
     /* Contact buttons: centred rows instead of one oversized button per line */

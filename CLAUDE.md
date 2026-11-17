@@ -389,7 +389,7 @@ The site is a Next.js App Router project exported as static HTML (`output: 'expo
 
 | Content | File | Served by |
 |---|---|---|
-| Home page = the résumé: About Me heading, photo card, name, Summary, Selected Work, Experience, Skills, Contact | `content/pages/index.html` (the summary text is in the HTML) | The old `/resume/` page is gone; `public/resume/index.html` redirects old links to `/#resume` |
+| Home page = the résumé: photo card with the name (h1), About me, Built by me (projects), Experience, Skills, Contact | `content/pages/index.html` (the summary text is in the HTML) | The old `/resume/` page is gone; `public/resume/index.html` redirects old links to `/#resume` |
 | Experience and skills | `public/data/experience.json`, `public/data/skills.json` | `resume-renderer.js` fills `.experience-timeline` and `.skills-grid` |
 | Old About text and hero text (no longer shown) | `content/site.json` | `{{SITE_*}}` tokens in `lib/site.ts`, unused by the current home page |
 | About photo cards | `content/about-carousel.json` (currently one card: the photo) | `app/(site)/data/about-carousel.json/route.ts` → `out/data/about-carousel.json`. With one card there are no dots, swiping or rotation (`.about-carousel.is-single`); add more cards to the file and the carousel comes back automatically, sized to the card count |
