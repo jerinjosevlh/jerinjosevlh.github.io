@@ -28,7 +28,7 @@
             justify-content: center;
             gap: var(--space-12);
             align-items: center;
-            margin-top: var(--space-8);
+            margin-top: 0;
             text-align: left;
         }
 
@@ -46,8 +46,14 @@
             max-width: 480px;
         }
 
-        .intro-text .subtitle {
-            margin-top: 0;
+        /* Your name is the page's main heading, beside the photo */
+        .intro-name {
+            margin: 0 0 var(--space-2);
+            font-size: clamp(32px, 4vw, 44px);
+            font-weight: 400;
+            letter-spacing: -0.01em;
+            line-height: 1.15;
+            color: var(--text-primary);
         }
 
         .header .description .interactive-text {
@@ -260,7 +266,7 @@
                 grid-template-columns: minmax(96px, 150px) max-content;
                 justify-content: center;
                 gap: var(--space-4);
-                margin-top: var(--space-6);
+                margin-top: 0;
                 text-align: left;
             }
 
@@ -305,8 +311,14 @@
                 height: 36px;
             }
 
-            .intro-text .subtitle {
-                font-size: 22px;
+            .intro-name {
+                font-size: 26px;
+                margin-bottom: var(--space-1);
+            }
+
+            /* Less space under the photo now the big heading is gone */
+            .resume-intro .header {
+                padding-bottom: var(--space-4);
             }
 
             .intro-text .description {
@@ -355,7 +367,6 @@
     <section class="resume-intro" id="about">
     <div class="container">
         <header class="header">
-            <h1 class="title">About Me</h1>
             <!-- Photo card on the left, name and links beside it (stacked on phones) -->
             <div class="intro-row">
                 <div class="about-carousel">
@@ -371,7 +382,7 @@
                     </div>
                 </div>
                 <div class="intro-text">
-                    <p class="subtitle">Jerin Jose</p>
+                    <h1 class="intro-name">Jerin Jose</h1>
                     <p class="description">
                         <a href="mailto:jerinjosevlh@gmail.com" class="accent-link">jerinjosevlh@gmail.com</a>
                     </p>
@@ -385,10 +396,10 @@
     </div>
     </section>
 
-    <!-- Curriculum Vitae Section -->
+    <!-- About me (summary) -->
     <section class="resume-section">
         <div class="container">
-            <h2 class="resume-section-title">Summary</h2>
+            <h2 class="resume-section-title">About me</h2>
             <div class="resume-summary">
                 Backend engineer who loves distributed systems. I build the parts of software you never see but always rely on: the services, data and systems that keep things working quietly in the background. My focus is on how many machines work together as one, and how a system keeps going when some of them fail; right now I'm building a distributed key-value store from scratch to learn exactly that. I also enjoy building complete software, from the first idea to something people can use.
             </div>
