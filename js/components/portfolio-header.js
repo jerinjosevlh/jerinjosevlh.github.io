@@ -1,27 +1,33 @@
 /*
- * Portfolio header: cover, avatar + follow button, name, bio, links and tags.
+ * Portfolio header: cover, avatar + connect button, name, bio, links and tags.
  */
 (function () {
   var e = App.escape;
   var C = App.components;
 
-  C.FollowButton = function (profile) {
-    return `<span class="follow-button-wrapper rendered" data-context="profile-header" data-size="small" data-follow-through-id="${e(profile.id)}"><div class="follow-actions follow-actions-regular ">
-  <form accept-charset="UTF-8" action="https://secure.devpost.com/users/register" method="get">
-    <div style="display:none"><input name="utf8" type="hidden" value="✓"></div>
-    <input id="flow_name" name="flow[name]" type="hidden" value="follow_user">
-    <input id="flow_data_lookup_id" name="flow[data][follow_through_id]" type="hidden" value="${e(profile.id)}">
-    <input id="flow_data_follow_through" name="flow[data][follow_through]" type="hidden" value="">
-    <input id="flow_data_context" name="flow[data][context]" type="hidden" value="profile-header">
-    <button class="button follow-btn radius small">
+  /**
+   * "Connect" button (same look as the original Follow button) that opens a
+   * small menu of ways to reach the profile owner. Opening/closing is handled
+   * by behaviors/connect-menu.js.
+   */
+  C.ConnectButton = function (links) {
+    if (!links || !links.length) return '';
+    var items = App.each(links, function (link) {
+      var external = /^https?:/.test(link.href);
+      return `<li role="none"><a role="menuitem" href="${e(link.href)}"${external ? ' target="_blank" rel="noopener"' : ''}><i class="${e(link.icon)}" aria-hidden="true"></i><span>${e(link.label)}</span>${external ? '<i class="fas fa-external-link-alt connect-external" aria-hidden="true"></i>' : ''}</a></li>`;
+    }, '\n      ');
+
+    return `<div class="connect" data-connect>
+    <button type="button" class="button follow-btn radius small" aria-haspopup="true" aria-expanded="false" data-connect-toggle>
       <span class="follow-text">
         <i class="ss-icon ss-plus"></i>
-          Follow
+          Connect
       </span>
     </button>
-  </form>
-</div>
-</span>`;
+    <ul class="connect-menu" role="menu" hidden data-connect-menu>
+      ${items}
+    </ul>
+  </div>`;
   };
 
   /** Location + external links row. */
@@ -72,7 +78,7 @@
         <div id="portfolio-user">
           <div id="portfolio-user-photo">
             <img alt="${e(profile.name)}'s avatar" class="user-photo photo_image image-replacement" data-fallback-src="${e(site.fallbackImages.avatar)}" src="${e(profile.photo)}">
-              ${C.FollowButton(profile)}
+              ${C.ConnectButton(profile.connect)}
           </div>
           <div id="portfolio-user-info">
             <h1 id="portfolio-user-name">

@@ -26,6 +26,16 @@ App.data.profile = {
     { label: 'GitHub', icon: 'ss-icon ss-social ss-octocat', href: 'https://github.com/jerinjosevlh' },
   ],
 
+  // "Connect" button menu under the profile photo.
+  // TODO: the LinkedIn, Email and Résumé entries are DUMMY placeholders — replace them.
+  // Links starting with http open in a new tab.
+  connect: [
+    { label: 'LinkedIn', icon: 'fab fa-linkedin-in', href: 'https://www.linkedin.com/in/your-profile/' },
+    { label: 'GitHub', icon: 'fab fa-github', href: 'https://github.com/jerinjosevlh' },
+    { label: 'Email', icon: 'fas fa-envelope', href: 'mailto:hello@example.com' },
+    { label: 'Résumé (PDF)', icon: 'fas fa-file-alt', href: '#resume' },
+  ],
+
   // `href` is optional: tags with a link are rendered as "recognized" tags.
   skills: [
     { name: 'swift', href: 'https://devpost.com/software/built-with/swift' },

@@ -8,6 +8,94 @@
   width: auto;
 }
 
+/* ---------- "Connect" button menu under the profile photo ---------- */
+
+.connect {
+  position: relative;
+  text-align: left;
+}
+/* Spacing lives on .connect (so the menu opens right under the button). */
+#portfolio-user-photo .connect .follow-btn {
+  margin-bottom: 0;
+}
+.connect .follow-btn .ss-plus {
+  display: inline-block;
+  transition: transform 0.2s ease;
+}
+.connect.is-open .follow-btn .ss-plus {
+  transform: rotate(45deg); /* + turns into × while open */
+}
+
+.connect-menu {
+  position: absolute;
+  z-index: 20;
+  top: calc(100% + 6px);
+  left: 0;
+  min-width: 100%;
+  margin: 0;
+  padding: 6px 0;
+  list-style: none;
+  border: 1px solid #DDE3E6;
+  border-radius: 4px;
+  background: #fff;
+  box-shadow: 0 8px 24px rgba(0, 62, 84, 0.18);
+}
+.connect-menu[hidden] {
+  display: none;
+}
+.connect-menu li {
+  margin: 0;
+}
+.connect-menu a {
+  display: flex;
+  align-items: center;
+  gap: 0.7em;
+  padding: 0.6em 1em;
+  font-size: 0.875rem;
+  color: #192325;
+  white-space: nowrap;
+}
+.connect-menu a:hover,
+.connect-menu a:focus {
+  background: #F5F7F7;
+  color: #1F78D1;
+  outline: none;
+}
+.connect-menu a > .fab,
+.connect-menu a > .fas:first-child {
+  width: 1.1em;
+  text-align: center;
+  color: #748F99;
+}
+.connect-menu a:hover > .fab,
+.connect-menu a:hover > .fas:first-child,
+.connect-menu a:focus > .fab,
+.connect-menu a:focus > .fas:first-child {
+  color: #1F78D1;
+}
+.connect-menu .connect-external {
+  margin-left: auto;
+  padding-left: 1em;
+  font-size: 0.65em;
+  color: #B7C3C7;
+}
+
+/* Phones: the button is centered under the photo; center the menu under it. */
+@media only screen and (max-width: 767px) {
+  .connect {
+    width: max-content; /* shrink to the button, centered below the photo */
+    margin: 0 auto 1.25em; /* the original Follow button's spacing above the name */
+  }
+  .connect-menu {
+    left: 50%;
+    transform: translateX(-50%);
+    min-width: 220px;
+  }
+  .connect-menu a {
+    padding: 0.8em 1.1em; /* bigger tap targets */
+  }
+}
+
 /* ---------- Project cards on phones: one sideways card per row ----------
  *
  *   ┌──────────┬─────────────────────────────┐
