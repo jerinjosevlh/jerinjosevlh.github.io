@@ -2,6 +2,12 @@
  * Site-specific overrides on top of the original Devpost styles.
  */
 
+/* Desktop header logo: the J hexagon instead of the wide wordmark, so let
+   the width follow its own shape (original CSS forces 185px for the wordmark). */
+#global-nav #logo img {
+  width: auto;
+}
+
 /* ---------- Project cards on phones: one sideways card per row ----------
  *
  *   ┌──────────┬─────────────────────────────┐

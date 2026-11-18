@@ -3,7 +3,7 @@
  */
 (function () {
   var LOGOS = {
-    desktop: 'images/logos/devpost-logo.svg',
+    desktop: 'images/logos/devpost-logo-mobile.svg', // J hexagon on desktop too
     mobile: 'images/logos/devpost-logo-mobile.svg',
     teams: 'images/logos/dft-logo-mobile.svg',
   };
