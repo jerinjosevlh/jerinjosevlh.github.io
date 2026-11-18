@@ -2,56 +2,72 @@
  * Site-specific overrides on top of the original Devpost styles.
  */
 
-/* ---------- Project layout switch (phones only) ---------- */
-
-.project-layout-toggle {
-  display: none;
-}
-
+/* ---------- Project cards on phones: one sideways card per row ----------
+ *
+ *   ┌──────────┬─────────────────────────────┐
+ *   │          │ Title                        │
+ *   │  image   │ Tagline, up to two lines …   │
+ *   │          │ (avatars)          ♥ 6  💬 4 │
+ *   └──────────┴─────────────────────────────┘
+ */
 @media only screen and (max-width: 767px) {
-  .project-layout-toggle {
-    display: flex;
-    justify-content: flex-end;
-    gap: 4px;
-    margin-bottom: 12px;
+  #software-entries .gallery-item {
+    width: 100%;
   }
-  .project-layout-toggle button {
-    all: unset; /* drop Foundation's global button styles */
-    box-sizing: border-box;
-    padding: 4px 10px;
-    border: 1px solid #DDE3E6;
-    border-radius: 999px;
-    font-size: 0.75rem;
-    line-height: 1.2;
-    color: #748F99;
-    background: #fff;
-    cursor: pointer;
-  }
-  .project-layout-toggle button[aria-pressed="true"] {
-    border-color: #003E54;
-    background: #003E54;
-    color: #fff;
-  }
-  .project-layout-toggle button:focus-visible {
-    outline: 2px solid #1F78D1;
-    outline-offset: 1px;
-  }
-  .project-layout-toggle .fas {
-    margin-right: 0.3em;
-  }
-}
 
-/* ---------- Project cards on phones: shared compact styles ---------- */
-
-@media only screen and (max-width: 767px) {
   .software-entry.gallery-entry {
+    display: grid;
+    grid-template-columns: 128px 1fr;
+    grid-template-rows: 1fr auto;
     margin-bottom: 12px;
+    overflow: hidden;
+  }
+
+  /* Let the image and caption become grid items directly. */
+  .software-entry figure {
+    display: contents;
+  }
+  .software-entry figure:before {
+    display: none; /* original 3:2 aspect-ratio spacer */
+  }
+  .software-entry .software_thumbnail_image {
+    position: static; /* original is absolutely positioned over the spacer */
+    grid-column: 1;
+    grid-row: 1 / 3;
+    width: 100%;
+    height: 100%;
+    min-height: 100px;
+    object-fit: cover;
+  }
+  .software-entry figcaption {
+    grid-column: 2;
+    grid-row: 1;
+    min-width: 0;
+  }
+
+  .gallery-entry .entry-body {
+    padding: 0.55em 0.75em 0.2em;
   }
   .gallery-entry .entry-body h5 {
     font-size: 0.9375rem;
+    margin-bottom: 0.15em;
   }
   .gallery-entry .entry-body .tagline {
     font-size: 0.75rem;
+  }
+
+  /* Smaller ribbon on the thumbnail corner */
+  .software-entry .entry-badge img {
+    width: 52px;
+  }
+
+  /* Footer: plain (no grey bar), small overlapping avatars left, counts right */
+  .software-entry footer {
+    grid-column: 2;
+    grid-row: 2;
+    min-width: 0;
+    padding: 0.3em 0.75em 0.5em;
+    background: transparent;
   }
   .software-entry .members img {
     width: 1.25rem;
@@ -64,88 +80,5 @@
   .software-entry footer .counts {
     font-size: 0.75rem;
     line-height: 1.25rem;
-  }
-}
-
-/* ---------- Option 1 — List: one sideways card per row ----------
- *
- *   ┌──────────┬─────────────────────────────┐
- *   │          │ Title                        │
- *   │  image   │ Tagline, up to two lines …   │
- *   │          │ (avatars)          ♥ 6  💬 4 │
- *   └──────────┴─────────────────────────────┘
- */
-@media only screen and (max-width: 767px) {
-  .projects-layout-list .gallery-item {
-    width: 100%;
-  }
-  .projects-layout-list .software-entry.gallery-entry {
-    display: grid;
-    grid-template-columns: 128px 1fr;
-    grid-template-rows: 1fr auto;
-    overflow: hidden;
-  }
-
-  /* Let the image and caption become grid items directly. */
-  .projects-layout-list .software-entry figure {
-    display: contents;
-  }
-  .projects-layout-list .software-entry figure:before {
-    display: none; /* original 3:2 aspect-ratio spacer */
-  }
-  .projects-layout-list .software-entry .software_thumbnail_image {
-    position: static; /* original is absolutely positioned over the spacer */
-    grid-column: 1;
-    grid-row: 1 / 3;
-    width: 100%;
-    height: 100%;
-    min-height: 100px;
-    object-fit: cover;
-  }
-  .projects-layout-list .software-entry figcaption {
-    grid-column: 2;
-    grid-row: 1;
-    min-width: 0;
-  }
-  .projects-layout-list .software-entry footer {
-    grid-column: 2;
-    grid-row: 2;
-    min-width: 0;
-    padding: 0.3em 0.75em 0.5em;
-    background: transparent;
-  }
-  .projects-layout-list .gallery-entry .entry-body {
-    padding: 0.55em 0.75em 0.2em;
-  }
-  .projects-layout-list .gallery-entry .entry-body h5 {
-    margin-bottom: 0.15em;
-  }
-  .projects-layout-list .software-entry .entry-badge img {
-    width: 52px;
-  }
-}
-
-/* ---------- Option 2 — Grid: two compact cards per row ---------- */
-@media only screen and (max-width: 767px) {
-  .projects-layout-grid > .row {
-    margin-left: -6px;
-    margin-right: -6px;
-  }
-  .projects-layout-grid .gallery-item {
-    width: 50%;
-    padding-left: 6px;
-    padding-right: 6px;
-  }
-  .projects-layout-grid .gallery-entry .entry-body {
-    padding: 0.45em 0.6em;
-  }
-  .projects-layout-grid .gallery-entry .entry-body h5 {
-    margin-bottom: 0.1em;
-  }
-  .projects-layout-grid .software-entry .entry-badge img {
-    width: 60px;
-  }
-  .projects-layout-grid .gallery-entry footer {
-    padding: 0.4em 0.6em;
   }
 }

@@ -13,5 +13,4 @@
   App.behaviors.globalNav(root);
   App.behaviors.expandable(root);
   App.behaviors.nestedLinks(root);
-  App.behaviors.projectLayout(root);
 })();

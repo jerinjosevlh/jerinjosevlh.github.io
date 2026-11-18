@@ -62,14 +62,6 @@
 </div></a>  </div>`;
   };
 
-  /** Phone-only switch between sideways "list" cards and a two-column "grid". */
-  C.ProjectLayoutToggle = function () {
-    return `<div class="project-layout-toggle" role="group" aria-label="Project layout">
-            <button type="button" data-project-layout="list" aria-pressed="true"><i class="fas fa-list"></i> List</button>
-            <button type="button" data-project-layout="grid" aria-pressed="false"><i class="fas fa-th-large"></i> Grid</button>
-          </div>`;
-  };
-
   C.ProjectGrid = function (projects, people, site) {
     var cards = App.each(projects, function (project) {
       return C.ProjectCard(project, people, site);
@@ -80,8 +72,7 @@
   <div class="content-section no-bottom">
     <div class="row">
       <div class="small-12 columns">
-          ${C.ProjectLayoutToggle()}
-          <div id="software-entries" class="portfolio-section projects-layout-list" data-project-layout-target>
+          <div id="software-entries" class="portfolio-section">
             <div class="row">
   ${cards}
               <div class="columns"></div>
