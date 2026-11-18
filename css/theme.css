@@ -1,0 +1,4 @@
+/* Per-user theme overrides (was the inline #new_user_stylesheet block). */
+#portfolio-cover {
+  background-color: #003E54;
+}

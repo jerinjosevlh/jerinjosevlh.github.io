@@ -1,7 +1,0 @@
-<svg width="45" height="37" viewBox="0 0 45 37" fill="none" xmlns="http://www.w3.org/2000/svg">
-<!-- JJ monogram. Used as a CSS mask: the colour comes from the theme, not this file. -->
-<g stroke="#000" stroke-width="4" stroke-linecap="round" stroke-linejoin="round">
-<path d="M10 2.6H22V22.6A10 10 0 0 1 2 22.6V21"/>
-<path d="M30.6 2.6H42.6V22.6A10.3 10.3 0 0 1 22 22.6"/>
-</g>
-</svg>

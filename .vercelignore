@@ -1,6 +1,0 @@
-# Keep local-only files out of Vercel CLI uploads (git deploys already skip them)
-jerimybrown-2025-main
-jerin.jpg
-out
-.next
-node_modules
